@@ -1,0 +1,47 @@
+/* static/variables.css */
+
+:root {
+  /* Primary Colors */
+  --primary: #0dcaf0; /* Cyan - for interactive elements */
+  --primary-variant: #08a7c2; /* Darker shade of primary */
+
+  /* Secondary Colors */
+  --secondary: #6c757d; /* Gray - for subtle elements */
+  --secondary-variant: #5a6268; /* Darker shade of secondary */
+
+  /* Accent/Warning Color */
+  --warning: #f0c419; /* Yellow - for warnings, use sparingly */
+  --warning-variant: #d0a408;
+
+  /* Success Color */
+  --success: #136e22; /* Dark Green - for success messages */
+  --success-variant: #0e4e16;
+
+  /* Text Colors */
+  --text-primary: #212529; /* Very dark gray - for main text in light mode */
+  --text-secondary: #6c757d; /* Medium gray - for secondary text */
+  --text-light: #ffffff; /* White - for text on dark backgrounds */
+  --text-faint: #a1a1a1; /* very light grey, for placeholders */
+
+  /* Background Colors */
+  --background: #ffffff; /* White - for main background in light mode */
+  --background-variant: #f8f9fa; /* Very light gray - for cards, modals in light mode */
+  --surface: #ffffff; /* White - for surfaces like cards, dialogs in light mode */
+  --surface-variant: #e9ecef; /* Slightly darker surface, for subtle differentiation */
+
+  /* Border Colors */
+  --border: #dee2e6; /* Light gray - for borders in light mode */
+  --border-light: #eff2f5; /* Very light border, for dividers */
+
+  /* Other */
+  --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Standard shadow */
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --transition: all 0.2s ease-in-out;
+  --rounded-md: 0.375rem; /* 6px */
+  --rounded-lg: 0.5rem;   /* 8px */
+  --spacing-sm: 0.5rem;  /* 8px */
+  --spacing-md: 1rem;    /* 16px */
+  --spacing-lg: 2rem;    /* 32px */
+}
+
+ 

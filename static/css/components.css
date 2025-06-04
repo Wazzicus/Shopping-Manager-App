@@ -1,0 +1,1452 @@
+/* css/components.css */
+
+/* ==========================================================================
+   CARDS - Custom Card Component (.sm-card)
+   ========================================================================== */
+
+.sm-card {
+    border-radius: 1.5rem;
+    border: 1px solid  #e0e0e0; 
+    box-shadow: 0px 4px 12px  rgba(0, 0, 0, 0.08); 
+    color: #333333; 
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.sm-card:hover {
+    box-shadow: 0px 6px 16px  rgba(0, 0, 0, 0.12); 
+    transform: translateY(-3px);
+}
+
+.sm-card .card-header {
+    background-color: var(--your-card-header-bg-color, transparent); 
+    color: var(--your-card-header-text-color, var(--your-primary-color)); 
+    padding: 0.75rem 1.25rem;
+    border-top-left-radius: calc(1.5rem - 1px); 
+    border-top-right-radius: calc(1.5rem - 1px);
+}
+
+.sm-card .card-body {
+    padding: 1.25rem;
+}
+
+
+ /*  Buttons
+   ========================================================================== */
+.btn {
+    font-family: 'Inter', 'sans-serif';
+    font-weight: 600;
+    border-radius: 1.6rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border: 2px solid transparent; /* Make default border transparent */
+    position: relative; /* For the raised effect */
+    overflow: hidden; /* hide the overflowed part of pseudo element */
+}
+
+.btn i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+.btn .btn-new-list-custom{
+    margin-right: 0;
+}
+
+.btn .btn-new-list-custom.expanded{
+    max-width: 0.5rem;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor; /* Use currentColor */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+/* Clear button */
+.btn-clear-custom {
+    position: absolute;
+    right: 50px;
+    background: transparent;
+    border: none;
+    color: #6c757d;
+    padding: 0.375rem;
+    display: none;
+}
+
+.btn-clear-custom:hover {
+    color: #495057;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--text-light);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: transparent;
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover::before,
+.btn-primary:focus::before{
+    opacity: 0.15;
+}
+
+
+.btn-primary:active {
+    background-color: var(--primary-variant);
+    border-color: var(--primary-variant);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--text-light);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: transparent;
+    border-color: var(--secondary);
+    color: var(--secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:hover::before,
+.btn-secondary:focus::before {
+    opacity: 0.15;
+}
+
+.btn-secondary:active {
+    background-color: var(--secondary-variant);
+    border-color: var(--secondary-variant);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
+}
+
+/* Success Button */
+.btn-success {
+    background-color: var(--success);
+    border-color: var(--success);
+    color: var(--text-light);
+}
+
+.btn-success:hover,
+.btn-success:focus {
+    background-color: transparent;
+    border-color: var(--success);
+    color: var(--success);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success:hover::before,
+.btn-success:focus::before {
+    opacity: 0.15;
+}
+
+.btn-success:active {
+    background-color: var(--success-variant);
+    border-color: var(--success-variant);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
+}
+
+/* Danger Button */
+.btn-danger {
+    background-color: #dc2626;
+    border-color: #dc2626;
+    color: var(--text-light);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    background-color: transparent;
+    border-color: #dc2626;
+    color: #dc2626;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger:hover::before,
+.btn-danger:focus::before {
+    opacity: 0.15;
+}
+
+.btn-danger:active {
+    background-color: #b81c1c;
+    border-color: #b81c1c;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
+}
+
+/* Warning Button */
+.btn-warning {
+    background-color: var(--warning);
+    border-color: var(--warning);
+    color: #000000;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+    background-color: transparent;
+    border-color: var(--warning);
+    color: var(--warning);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-warning:hover::before,
+.btn-warning:focus::before {
+    opacity: 0.15;
+}
+
+.btn-warning:active {
+    background-color: var(--warning-variant);
+    border-color: var(--warning-variant);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
+}
+
+/* Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+    .btn-primary {
+        color: var(--text-light);
+    }
+  .btn-primary:hover,
+  .btn-primary:focus {
+        color: var(--primary);
+  }
+
+
+  .btn-secondary {
+        color: var(--text-light);
+  }
+  .btn-secondary:hover,
+  .btn-secondary:focus {
+    color: var(--secondary);
+  }
+
+  .btn-success {
+        color: var(--text-light);
+  }
+  .btn-success:hover,
+  .btn-success:focus {
+    color: var(--success);
+  }
+
+  .btn-danger {
+        color: var(--text-light);
+  }
+  .btn-danger:hover,
+  .btn-danger:focus {
+    color: #dc2626;
+  }
+
+  .btn-warning {
+        color: var(--text-primary);
+  }
+  .btn-warning:hover,
+  .btn-warning:focus {
+    color: var(--warning);
+  }
+}
+
+
+/* ==========================================================================
+   Forms & Inputs
+   ========================================================================== */
+.form-group label { /* General label styling if using .form-group */
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.form-label { 
+    margin-right: 0.5rem;
+}
+
+.custom-input { /* Your custom input field style */
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--text);
+    font-size: 1rem;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+.custom-input:focus {
+    border-color: var(--primary); /* Assuming var(--primary) is defined */
+    box-shadow: 0 0 0 3px rgba(100, 149, 237, 0.3); /* Example focus, consider var(--primary-focus-shadow) */
+    outline: none;
+}
+.custom-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+.dark-mode .custom-input { /* Dark mode override for custom-input */
+    background-color: var(--input-bg-dark);
+    border-color: var(--border-dark);
+    color: var(--text-dark);
+}
+
+.inline-form { /* For forms that should sit on one line */
+    display: inline-block; /* Or flex if children need more complex alignment */
+    margin-right: 10px; /* Example spacing */
+}
+
+
+/* ==========================================================================
+   Icons
+   ========================================================================== */
+.btn .bi { /* Icons inside buttons */
+    font-size: 1.1rem;
+    vertical-align: middle;
+}
+table .badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.6em;
+}
+
+table td ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+    margin-top: 0.25rem;
+}
+.list-group {
+    border-radius: 1rem;
+}
+
+
+/* ==========================================================================
+   Progress Bar (Custom)
+   ========================================================================== */
+.custom-progress-track {
+    display: flex;
+    align-items: center;
+    height: 12px;
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.custom-progress-filled {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 6px;
+    flex-shrink: 0;
+    flex-basis: 0%;
+    width: 0%;
+    transition: flex-basis 0.4s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.custom-progress-gap {
+    width: 4px;
+    height: 100%;
+    flex-shrink: 0;
+    flex-basis: 4px;
+}
+
+.custom-progress-unfilled {
+    height: 100%;
+    background-color: var(--secondary) ;
+    border-radius: 6px;
+    flex-grow: 1;
+    flex-basis: 100%;
+    width: 100%;
+    position: relative;
+    transition: flex-basis 0.4s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.custom-progress-unfilled::after { /* Stop Indicator Dot */
+    content: '';
+    display: block;
+    position: absolute;
+    width: calc(12px * 0.66);
+    height: calc(12px * 0.66);
+    border-radius: 50%;
+    background-color: #E2E8F0; /* Consider var(--bs-light) or similar */
+    top: 50%;
+    right: calc(6px - (12px * 0.66) / 2);
+    transform: translateY(-50%);
+    z-index: 1;
+}
+.custom-progress-unfilled.is-empty::after { /* Hide dot when 100% */
+    display: none;
+}
+
+
+/* ==========================================================================
+   Search Bar (Shopping Search Pill)
+   ========================================================================== */
+/* --- Search Bar Container on Dashboard --- */
+.dashboard-search-container {
+    margin-bottom: 1.5rem;
+}
+
+.shopping-search-pill-container {
+    display: flex;
+    align-items: center;
+    background-color: var(--your-search-input-bg, #f0f0f0);
+    border-radius: 50px;
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+    idth: 100%;
+    position: relative;
+    transition: background-color 0.3s ease, transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.shopping-search-pill-container:hover {
+    transform: scale(1.02);
+    box-shadow: var(--your-search-container-hover-shadow, 0px 4px 10px rgba(0,0,0,0.1));
+}
+
+.shopping-search-pill-container .form-control {
+    flex-grow: 1; background-color: transparent; color: var(--your-search-input-text, #212529);
+    border: none; box-shadow: none; padding-left: 1rem; padding-top: 0.35rem;
+    padding-bottom: 0.35rem; padding-right: 2.8rem; font-size: 0.9rem; height: auto;
+}
+
+.shopping-search-pill-container .form-control:focus {
+    background-color: transparent; color: var(--your-search-input-text, #212529);
+    box-shadow: none; outline: none;
+}
+
+.shopping-search-pill-container .form-control::placeholder {
+    color: var(--your-search-placeholder-text, #6c757d); opacity: 1; font-size: 0.9rem;
+}
+
+.shopping-search-pill-container .form-control::-webkit-search-cancel-button,
+.shopping-search-pill-container .form-control::-webkit-search-decoration {
+    -webkit-appearance: none; appearance: none; display: none;
+}
+
+.shopping-search-pill-container .form-control::-ms-clear { display: none; width : 0; height: 0; }
+.shopping-search-pill-container .form-control::-moz-clear { display: none; }
+.shopping-search-pill-container .btn-clear-custom {
+    position: absolute; right: calc(50px + 1rem); top: 50%; transform: translateY(-50%);
+    display: none; align-items: center; justify-content: center; width: 28px; height: 28px;
+    padding: 0; border-radius: 50%; background-color: var(--your-clear-button-bg, #e9ecef);
+    color: var(--your-clear-button-icon-color, #6c757d); border: none;
+    transition: opacity 0.1s ease-in-out, visibility 0.1s ease-in-out; z-index: 4; cursor: pointer;
+}
+
+.shopping-search-pill-container .btn-clear-custom.visible { display: flex; opacity: 1; visibility: visible; }
+.shopping-search-pill-container .btn-clear-custom:hover { background-color: var(--your-clear-button-hover-bg, #ced4da); }
+.shopping-search-pill-container .btn-clear-custom .bi-x-lg { font-size: 0.8rem; }
+.shopping-search-pill-container .btn-search-custom {
+    display: flex; align-items: center; justify-content: center;
+    background-color: var(--your-search-button-bg, #f0c419); color: var(--your-search-button-text, #343a40);
+    border: none; box-shadow: none; border-radius: 50px; font-weight: 600; margin-left: 0.3rem;
+    flex-shrink: 0; overflow: hidden; position: relative; z-index: 3; font-size: 0.9rem;
+    padding: 0.35rem 0.6rem; min-width: 35px;
+    transition: width 0.3s ease-in-out, padding 0.3s ease-in-out, background-color 0.2s ease;
+}
+
+.shopping-search-pill-container .btn-search-custom.expanded { padding: 0.35rem 1.2rem; }
+.shopping-search-pill-container .btn-search-custom .bi-search {
+    color: var(--your-search-icon-color, #343a40); transition: margin 0.3s ease-in-out; font-size: 1rem;
+}
+
+.shopping-search-pill-container .btn-search-custom .search-text {
+    opacity: 0; max-width: 0; margin-left: 0; white-space: nowrap;
+    transition: opacity 0.1s ease-in-out, max-width 0.3s ease-in-out, margin-left 0.3s ease-in-out;
+}
+
+.shopping-search-pill-container .btn-search-custom.expanded .search-text {
+    opacity: 1; max-width: 100px; margin-left: 0.4em; transition-delay: 0.1s;
+}
+
+
+/* ==========================================================================
+   Loaders
+   ========================================================================== */
+/* Page Loader Overlay */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--your-page-loader-bg, rgba(255, 255, 255, 0.8)); /* Define variable */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
+.page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Dots Animation for Page Loader */
+.dots-container {
+    display: flex;
+    align-items: center;
+}
+.dot {
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 0 6px;
+    background-color: var(--your-primary-color, #007bff); /* Define variable */
+    border-radius: 50%;
+    animation: pulse 1.4s infinite ease-in-out both;
+}
+.dot:nth-child(1) { animation-delay: -0.32s; }
+.dot:nth-child(2) { animation-delay: -0.16s; }
+/* .dot:nth-child(3) is covered by default animation if you have 3 dots */
+
+/* Spinner Loader (General Purpose / Buttons) */
+.spinner { /* This is a general spinner, Bootstrap's .spinner-border is often used in buttons */
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--your-spinner-track-color, #f3f3f3); /* Define variable */
+    border-top-color: var(--your-primary-color, #007bff); /* Define variable */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+
+/* ==========================================================================
+   Pills & Badges
+   ========================================================================== */
+/* "Added By" Pill */
+.added-by-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15em 0.6em 0.15em 0.15em;
+    font-size: 0.75em;
+    font-weight: 500;
+    line-height: 1;
+    color: #fff; /* Default text color */
+    background-color: #6c757d; /* Default Bootstrap secondary */
+    border-radius: 50px; /* Pill shape */
+    margin-left: 0.5em;
+    vertical-align: middle;
+}
+.added-by-pill img.profile-pic-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 0.4em;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+/* Contextual "Added By" Pills - ensure text color contrasts with background */
+.added-by-pill.bg-primary { color: #fff; } /* Assuming --bs-primary is dark enough */
+.added-by-pill.bg-success { color: #fff; } /* Assuming --bs-success is dark enough */
+.added-by-pill.bg-info   { color: #000; } /* Bootstrap info is light, so dark text */
+
+/* Role Badges (for tables or user lists) */
+.role-badge {
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.75em;
+    font-weight: 600;
+    display: inline-block;
+}
+.role-admin {
+    background-color: #d1fae5; /* Light green */
+    color: #065f46; /* Dark green */
+}
+.role-member {
+    background-color: #fef3c7; /* Light yellow */
+    color: #92400e; /* Dark yellow/brown */
+}
+
+/* Coming Soon Pill */
+.coming-soon-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6em 0.6em 0.6em 0.6em;
+    font-size: 0.75em;
+    font-weight: 500;
+    line-height: 1;
+    color: black;
+    margin-left: 0.5em;
+    background-color: var(--warning); 
+    border-radius: 50px; 
+    vertical-align: middle;
+}
+
+
+/* ==========================================================================
+   Profile Section (Dashboard)
+   ========================================================================== */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem; /* From original dashboard styles */
+    padding: 1rem;
+    background-color: var(--bs-tertiary-bg); /* Bootstrap variable for light greyish background */
+    border-radius: 0.75rem; /* Rounded corners */
+}
+.profile-pic-placeholder {
+    width: 50px;
+    height: 50px;
+    background-color: #6c757d; 
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+.profile-pic-placeholder .bi-person-fill {
+    font-size: 1.8rem;
+}
+.profile-pic-actual {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+.profile-info h5 { /* Welcome message */
+    margin-bottom: 0.25rem;
+}
+.profile-actions .btn { /* Buttons like Settings, Manage Household */
+    font-size: 0.875rem; /* Slightly smaller buttons */
+}
+
+
+/* ==========================================================================
+   Dashboard Specific Styles
+   ========================================================================== */
+.dashboard-search-container { /* Wrapper for the main search bar on dashboard */
+    margin-bottom: 1.5rem;
+    /* It uses .shopping-search-pill-container, styles for which are under "Search Bar" section */
+}
+
+
+/* ==========================================================================
+   Tab Switcher (Sliding Indicator)
+   ========================================================================== */
+.nav-toggle-switcher { /* Parent container for the tabs */
+    position: relative;
+    display: inline-flex;
+    background-color: #e9ecef; /* Light background for the tab strip */
+    border-radius: 999px;   /* Pill-shaped strip */
+    padding: 4px;
+    list-style: none;
+    margin: 0;
+    box-sizing: border-box;
+}
+.nav-toggle-switcher .nav-item .nav-link { /* Individual tab buttons */
+    display: block;
+    padding: 8px 20px;
+    margin: 0;
+    color: #495057; /* Inactive tab text color */
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    border-radius: 999px; /* Pill shape for buttons */
+    cursor: pointer;
+    position: relative;
+    z-index: 1; /* Text above slider */
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    font-weight: 500;
+    box-sizing: border-box;
+}
+
+.nav-toggle-switcher .nav-item .nav-link.active { /* Active tab button text */
+    color: var(--primary-variant);
+}
+
+#tabSlider { /* The Sliding Indicator itself */
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    background-color: #ffffff; /* Slider pill color */
+    border-radius: 999px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 0; /* Behind tab text */
+    transition-property: left, width;
+    transition-duration: 0.35s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    left: 0px;  /* Initial state, JS updates */
+    width: 0px; /* Initial state, JS updates */
+    box-sizing: border-box;
+}
+
+#tabSlider.no-transition { /* Temporarily disable transitions (e.g., on resize) */
+    transition: none !important;
+}
+
+
+/* ==========================================================================
+   Household Management Page Specifics
+   ========================================================================== */
+.household-info-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) { /* sm breakpoint */
+    .household-info-header {
+        flex-direction: row;
+        align-items: center;
+    }
+    .household-info-header form { /* Assuming form is direct child for rename */
+        margin-top: 0;
+    }
+}
+
+.household-join-id { /* Styling for displaying the join code */
+    font-family: monospace;
+    background-color: #f0f0f0; /* Light grey */
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #e74c3c; /* Reddish, stands out */
+    font-weight: bold;
+}
+
+.rename-household-group { /* For inline rename form */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (min-width: 640px) { /* sm breakpoint */
+    .rename-household-group {
+        flex-direction: row;
+        align-items: center;
+    }
+    .rename-household-group input[type="text"] {
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+}
+
+.admin-section-title { /* Title for admin-only sections */
+    color: #c0392b; /* Reddish color */
+    /* Consider font-size, margin etc. */
+}
+
+
+/* ==========================================================================
+   Tables (e.g., for Household Members)
+   ========================================================================== */
+.table-container {
+    overflow-x: auto; /* Responsive tables */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Or as needed */
+}
+
+th, td {
+    border: 1px solid #ddd; /* Consider var(--bs-border-color) */
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f9f9f9; /* Consider var(--bs-tertiary-bg) */
+    font-weight: 600;
+    font-size: 0.85em;
+    text-transform: uppercase;
+}
+
+.avatar-in-table { /* For user profile pics in table rows */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+.user-details-in-table { /* Container for avatar + name in a table cell */
+    display: flex;
+    align-items: center;
+}
+
+/* CSS for Expandable Header Controls in Dashboard */
+
+.list-header-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+}
+
+.list-header-title {
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 1.25rem;
+}
+/* Rounded Table */
+
+.rounded-table {
+    border-radius: 1.5rem;
+    overflow: hidden; 
+    border-collapse: separate; 
+    border-spacing: 0;
+    overflow-x: auto;
+}
+
+.rounded-table thead tr:first-child th:first-child {
+    border-top-left-radius: 1.5rem;
+}
+
+.rounded-table thead tr:first-child th:last-child{
+    border-top-right-radius: 1.5rem;
+}
+
+.rounded-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 1.5rem;
+}
+
+.rounded-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 1.5rem;
+}
+
+.rounded-table th,
+.rounded-table td {
+    padding: 0.75rem;
+}
+
+.rounded-table th,
+.rounded-table td {
+    padding: 0.75rem;
+}
+
+.header-actions-toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+/* Default for all action groups */
+.header-action-group {
+    position: relative;
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+}
+
+.header-action-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+    width: 100%; 
+    padding: 0.375rem 0.75rem;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, 
+                width 0.3s ease-in-out, padding 0.3s ease-in-out; 
+}
+
+.header-action-toggle .action-text {
+    display: inline-block;
+    max-width: 100px; 
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 1;
+    vertical-align: middle;
+    transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-action-toggle .header-action-icon {
+    transition: margin-right 0.3s ease-in-out;
+    flex-shrink: 0;
+}
+
+/* Generic Input container - hidden by default */
+.header-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%; 
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    margin-top: 0;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s 0.1s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 0s 0.35s, 
+                margin-top 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Generic expanded state for input containers (primarily for Quick Add) */
+.header-action-group.expanded .header-input-container {
+    max-height: 60px; 
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0.5rem; 
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 0s 0s, 
+                margin-top 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.header-input-container .custom-input-sm {
+    flex-grow: 1;
+    min-width: 0; 
+}
+
+.header-input-container .btn-sm {
+    height: calc(1.5em + 0.5rem + 2px); 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.header-input-container .btn-clear-header-input {
+    background: transparent;
+    border: none;
+    color: var(--bs-secondary-color);
+    padding: 0 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    display: none; 
+    transition: opacity 0.2s ease-in-out; 
+}
+
+.header-input-container .btn-clear-header-input.visible {
+    opacity: 1;
+    visibility: visible;
+    display: inline-flex; 
+}
+
+.header-input-container .btn-clear-header-input:hover {
+    color: var(--bs-body-color);
+}
+
+.custom-input-sm {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important;
+}
+
+/* Header Input Container */
+.header-input-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 5px;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    z-index: 100;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-input-container.active {
+    width: auto;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+/* Search Button Styles */
+.header-action-toggle {
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Make button round when retracted */
+.header-action-toggle.retracted {
+    border-radius: 50%;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+
+/* Search Icon */
+.header-action-icon {
+    font-size: 20px;
+}
+
+/* Input Field Styling */
+.custom-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    flex-grow: 1; /* Make the input field grow to take available space */
+}
+
+/* Focus State for Input */
+.custom-input:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Clear Button Styling */
+.btn-clear-header-input {
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* FAQ accordion styling */
+.custom-accordion .accordion-item {
+    border: none;
+    border-radius: 1.5rem !important;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-accordion .accordion-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.custom-accordion .accordion-buton {
+    border-radius: 1.5rem !important;
+    transition: background-color 0.3s ease;
+}
+
+.custom-accordion .accordion-button:focus{
+    box-shadow: none;
+}
+
+.custom-accordion .accordion-body {
+    border-radius: 0 0 15px 15px;
+    padding: 1.5rem;
+}
+
+.custom-accordion .accordion-body.collapsed {
+    border-radius: 15px !important  ;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    color: var(--bs-primary);
+}
+
+.accordion-button:focus {
+  border-color: rgba(var(--bs-primary-rgb), 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.list-name-display {
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-list-btn {
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.875rem;
+}
+
+/* Animation for Header Buttons */
+.header-action-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: width 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.header-action-toggle.compact {
+    width: 32px;
+    padding: 0.25rem;
+}
+
+.header-action-toggle .action-text {
+    transition: opacity 0.3s ease;
+}
+
+.header-action-toggle.compact .action-text {
+    opacity: 0;
+    width: 0;
+}
+
+.header-action-icon {
+    flex-shrink: 0;
+}
+
+.container .px-0 .sticky-top{
+    top: 1.5rem !important;
+}
+
+#householdNameDisplay {
+    display: inline-block;
+    transition: opacity 0.5s ease-in-out;
+}
+
+
+/* Loading state */
+.btn-loading .spinner-border {
+    display: inline-block !important;
+    margin-right: 0.5rem;
+}
+
+#cta-card {
+    border-radius: 1.5rem;
+    box-shadow: 0px 4px 12px var(--your-card-shadow-color, rgba(0, 0, 0, 0.08)); 
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+#cta-card:hover {
+    box-shadow: 0px 6px 16px var(--your-card-shadow-hover-color, rgba(0, 0, 0, 0.12)); 
+    transform: translateY(-3px);
+}
+
+/* Modals */
+#confirmModal {
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    border-radius: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Flash Messages */
+#flashMessage {
+    border-radius: 1.5rem;
+
+}
+
+/* List Item Styles */
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.list-item-content {
+    flex-grow: 1;
+}
+
+.list-item-name {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.list-item-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.list-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+
+
+
+/*  Form Errors */
+.invalid-feedback{
+    display: block;
+}
+
+/* ==========================================================================
+   Add New List Bar  (Add New List Bar Pill)
+   ========================================================================== */
+/* --- Add New List Bar Bar Container on Dashboard --- */
+.dashboard-new-list-container {
+    margin-bottom: 1.5rem;
+}
+
+.shopping-new-list-pill-container {
+    display: flex;
+    align-items: center;
+    background-color: var(--your-search-input-bg, #f0f0f0);
+    border-radius: 50px;
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+    width: 100%;
+    position: relative;
+    transition: background-color 0.3s ease, transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.shopping-new-list-pill-container:hover {
+    transform: scale(1.02);
+    box-shadow: var(--your-search-container-hover-shadow, 0px 4px 10px rgba(0,0,0,0.1));
+}
+
+.shopping-new-list-pill-container .form-control {
+    flex-grow: 1; background-color: transparent; color: var(--your-search-input-text, #212529);
+    border: none; box-shadow: none; padding-left: 1rem; padding-top: 0.35rem;
+    padding-bottom: 0.35rem; padding-right: 2.8rem; font-size: 0.9rem; height: auto;
+}
+
+.shopping-new-list-pill-container .form-control:focus {
+    background-color: transparent; color: var(--your-search-input-text, #212529);
+    box-shadow: none; outline: none;
+}
+
+.shopping-new-list-pill-container .form-control::placeholder {
+    color: var(--your-search-placeholder-text, #6c757d); opacity: 1; font-size: 0.9rem;
+}
+
+.shopping-new-list-pill-container .form-control::-webkit-search-cancel-button,
+.shopping-new-list-pill-container .form-control::-webkit-search-decoration {
+    -webkit-appearance: none; appearance: none; display: none;
+}
+
+.shopping-new-list-pill-container .form-control::-ms-clear { display: none; width : 0; height: 0; }
+.shopping-new-list-pill-container .form-control::-moz-clear { display: none; }
+.shopping-new-list-pill-container .btn-clear-custom {
+    position: absolute; right: calc(50px + 1rem); top: 50%; transform: translateY(-50%);
+    display: none; align-items: center; justify-content: center; width: 28px; height: 28px;
+    padding: 0; border-radius: 50%; background-color: var(--your-clear-button-bg, #e9ecef);
+    color: var(--your-clear-button-icon-color, #6c757d); border: none;
+    transition: opacity 0.1s ease-in-out, visibility 0.1s ease-in-out; z-index: 4; cursor: pointer;
+}
+
+.shopping-new-list-pill-container .btn-clear-custom.visible { display: flex; opacity: 1; visibility: visible; }
+.shopping-new-list-pill-container .btn-clear-custom:hover { background-color: var(--your-clear-button-hover-bg, #ced4da); }
+.shopping-new-list-pill-container .btn-clear-custom .bi-x-lg { font-size: 0.8rem; }
+.shopping-new-list-pill-container .btn-new-list-custom {
+    display: flex; align-items: center; justify-content: center;
+    background-color: var(--your-search-button-bg, #f0c419); color: var(--your-search-button-text, #343a40);
+    border: none; box-shadow: none; border-radius: 50px; font-weight: 600; margin-left: 0.3rem;
+    flex-shrink: 0; overflow: hidden; position: relative; z-index: 3; font-size: 0.9rem;
+    padding: 0.35rem 0.6rem; min-width: 35px;
+    transition: width 0.3s ease-in-out, padding 0.3s ease-in-out, background-color 0.2s ease;
+}
+
+.shopping-new-list-pill-container .btn-new-list-custom.expanded { padding: 0.35rem 1.2rem; }
+.shopping-new-list-pill-container .btn-new-list-custom .bi-plus-circle {
+    color: var(--your-search-icon-color, #343a40); transition: margin 0.3s ease-in-out; font-size: 1rem;
+}
+
+.shopping-new-list-pill-container .btn-new-list-custom .New-List-text {
+    opacity: 0; max-width: 0; margin-left: 0; white-space: nowrap;
+    transition: opacity 0.1s ease-in-out, max-width 0.3s ease-in-out, margin-left 0.3s ease-in-out;
+}
+
+.shopping-new-list-pill-container .btn-new-list-custom.expanded .New-List-text {
+    opacity: 1; max-width: 100px; margin-left: 0.4em; transition-delay: 0.1s;
+}
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.avatar-option {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.avatar-option:hover {
+  border-color: #aaa;
+  opacity: 0.8;
+}
+
+.avatar-option.selected-avatar {
+  border-color: #007bff; 
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+}
+.checkmark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 6px;
+  font-size: 14px;
+  display: none;
+}
+
+.avatar-option.selected-avatar .checkmark {
+  display: block;
+}
+
+/* Hero section styling */
+.hero {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+}
+
+/* Feature card and hover effects */
+.hover-card {
+  transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Feature icons */
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Step numbers */
+.step-number {
+  font-weight: bold;
+}
+
+/* Pricing section */
+.pricing-price {
+  line-height: 1;
+}
+
+/* Testimonial cards */
+.testimonial-author .rounded-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add animation classes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate__fadeIn {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.animate__animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .display-5 {
+    font-size: 2rem;
+  }
+}
+/* ==============================================================================
+   COMPONENT STYLES
+   ============================================================================== */
+
+/* Cards */
+.card {
+    background-color: var(--bs-secondary-bg);
+    border-color: var(--bs-border-color);
+}
+
+.card-header {
+    background-color: rgba(var(--bs-secondary-rgb), 0.5); 
+    border-bottom-color: var(--bs-border-color);
+}
+
+
+/* List Items */
+.item-purchased .item-name {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* Toasts */
+.toast-container {
+    border-radius: 1.5rem;
+}
+#toastTemplate{
+    border-radius: 1.5rem;
+}
+
+/* Images on Landing Page */
+.roundy{
+    border-radius: 1.5rem;
+}
+
+/* For the current display name fade effect */
+.current-display-name {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.current-display-name.fade-out {
+    opacity: 0;
+}
+
+.current-display-name.fade-in {
+    opacity: 1;
+}
