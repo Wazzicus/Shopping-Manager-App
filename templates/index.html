@@ -15,7 +15,7 @@ Shopping Manager - Simplify Your Shopping Experience
                 </div>
             </div>
             <div class="col-lg-6">
-                <img src="{{ url_for('static', filename='images/Clipboard.jpg') }}" alt="ShopSmart Dashboard" class="img-fluid roundy shadow-lg" onerror="this.src='https://placehold.co/800x450?text=Dashboard+Preview'">
+                <img src="{{ url_for('static', filename='images/Clipboard.webp') }}" alt="Clipboard" class="img-fluid roundy shadow-lg" onerror="this.src='https://placehold.co/800x450?text=Clipboard'">
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@ Shopping Manager - Simplify Your Shopping Experience
         </div>
         <div class="row mb-5">
             <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-                <img src="{{ url_for('static', filename='images/Create_account.jpg') }}" alt="Create Account" class="img-fluid shadow roundy" onerror="this.src='https://placehold.co/600x400?text=Create+Account'">
+                <img src="{{ url_for('static', filename='images/Create_account.jpg') }}" alt="Create Account" class="img-fluid shadow roundy" onerror="this.src='https://placehold.co/600x400?text=Create+Account'" loading="lazy">
             </div>
             <div class="col-lg-6 order-lg-1 d-flex align-items-center">
                 <div>
@@ -84,7 +84,7 @@ Shopping Manager - Simplify Your Shopping Experience
         </div>
         <div class="row mb-5">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="{{ url_for('static', filename='images/Computer_Screen_With_ShoppingList.jpg') }}" alt="Create Lists" class="img-fluid shadow roundy" onerror="this.src='https://placehold.co/600x400?text=Create+Lists'">
+                <img src="{{ url_for('static', filename='images/Computer_Screen_With_ShoppingList.jpg') }}" alt="Create Lists" class="img-fluid shadow roundy" onerror="this.src='https://placehold.co/600x400?text=Create+Lists'" loading="lazy">
             </div>
             <div class="col-lg-6 d-flex align-items-center">
                 <div>
@@ -96,7 +96,7 @@ Shopping Manager - Simplify Your Shopping Experience
         </div>
         <div class="row">
             <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-                <img src="{{ url_for('static', filename='images/Trolley_with_Groceries.jpg') }}" alt="Trolley_with_Groceries" class="img-fluid shadow roundy" onerror="this.src='https://placehold.co/600x400?text=Shop+Smarter'">
+                <img src="{{ url_for('static', filename='images/Trolley_with_Groceries.jpg') }}" alt="Trolley_with_Groceries" class="img-fluid shadow roundy" onerror="this.src='https://placehold.co/600x400?text=Shop+Smarter'" loading="lazy">
             </div>
             <div class="col-lg-6 order-lg-1 d-flex align-items-center">
                 <div>
@@ -204,7 +204,7 @@ Shopping Manager - Simplify Your Shopping Experience
     <div class="cta text-center bg-primary text-white  mb-5 p-5" id="cta-card" data-aos="fade-up">
         <h2 class="display-5 fw-bold mb-3">Ready to Transform Your Shopping Experience?</h2>
         <p class="lead mb-4">Join thousands of happy users who save time and hassle with Shopping Manager. Start today, at no cost.</p>
-        <a href="{{ url_for('auth.auth') + '#register' }}" class="btn btn-warning w-100">Get Started</a>
+        <button id="install-btn" class="btn btn-warning w-100" style="display: none;" onclick="installApp()">Install App</button>
     </div>
 
     <div class="faq mb-5">
@@ -261,12 +261,28 @@ Shopping Manager - Simplify Your Shopping Experience
 {% endblock %}
 {% block scripts %}
 {{ super() }}
-
-<script src="https://unpkg.com/a0s@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init({
-        duration: 800,
-        once: true
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt' , (e) => {
+        e.preventDefault();
+        defferedPrompt = e;
+
+        document.getElementById('install-btn').style.display ='inline-block';
     });
+
+    function installApp() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(choice => {
+                if (choice.outcome === 'accepted') {
+                    console.log('App Installed!');
+                }
+                else {
+                console.log('App install dismissed');
+                }
+                deferredPrompt = null;
+            });
+        }
+    }
 </script>
 {% endblock %}

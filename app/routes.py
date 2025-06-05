@@ -10,7 +10,8 @@ Routes:
 - /dashboard: Main user dashboard (requires login)
 """
 
-from flask import Blueprint, render_template, url_for, flash, redirect
+import os
+from flask import Blueprint, render_template, url_for, flash, redirect, send_from_directory
 from flask_login import login_required, current_user
 from app.models import Household as HouseholdModel, ShoppingList as ShoppingListModel, ActivityLog, ListItem as ListItemModel
 from app.utils import format_action
@@ -79,3 +80,12 @@ def dashboard():
         format_action=format_action,
         new_list_form=new_list_form
     )
+
+@main.route('/service-worker.js')
+def serviceworker():
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+    return send_from_directory(root, 'service-worker/service-worker.js')
+
+@main.route('/offline')
+def offline():
+    return render_template("offline.html")

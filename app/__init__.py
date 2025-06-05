@@ -21,6 +21,9 @@ from .shopping_lists.routes import shoppinglist_bp
 from .settings.routes import settings_bp
 from .files.routes import files_bp
 
+# Assets
+from app.assets import register_assets
+
 # Configuration
 from .config import Config
 
@@ -52,6 +55,9 @@ def create_app():
         template_folder=os.path.abspath("templates"),
         static_folder=os.path.abspath("static")
     )
+
+    # Register Assets
+    register_assets(app)
 
     # Load configuration (default: from Config class)
     app.config.from_object(Config)
