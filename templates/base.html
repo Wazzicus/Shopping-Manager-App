@@ -188,7 +188,33 @@
                 });
             }
         </script>
-        
+        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+        <script src= "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+        <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log("Service Worker registered");
+
+                // Reinitialize messaging with the registration
+                getToken(messaging, {
+                vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk",
+                serviceWorkerRegistration: registration
+                }).then((currentToken) => {
+                if (currentToken) {
+                    console.log("Token with registered SW:", currentToken);
+                    fetch("/store-token", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token: currentToken }),
+                    });
+                }
+                });
+            })
+            .catch((err) => console.error("Service Worker registration failed:", err));
+        }
+        </script>
+        <script type="module" src="{{ url_for('static', filename='js/firebase-init.js') }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -39,6 +39,8 @@ def create_list():
 
     is_ajax = request.is_json
     list_name = request.get_json().get('name', '').strip() if is_ajax else request.form.get('name', '').strip()
+    list_type = request.get_json().get('type', '').strip() if is_ajax else request.form.get('list_type', '').strip()
+
 
     if not list_name:
         msg = "List name cannot be empty."
@@ -58,11 +60,14 @@ def create_list():
         msg = f"A list named '{list_name}' already exists."
         return jsonify({"success": False, "message": msg}), 400 if is_ajax else flash(msg, 'error')
 
+    is_shared = list_type.lower() == 'shared' if list_type else False    
+
     try:
         new_list = ShoppingListModel(
             name=list_name,
+            is_shared=is_shared,
             created_by_user_id=current_user.id,
-            household_id=current_user.household_id
+            household_id=current_user.household_id if is_shared else None
         )
         db.session.add(new_list)
         db.session.commit()

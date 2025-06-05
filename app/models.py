@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     Represents a user account in the system.
     Users can be members or admins of a household and interact with lists/items.
     """
+
     __tablename__ = 'users'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -96,7 +97,8 @@ class ShoppingList(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    household_id = db.Column(db.Integer, db.ForeignKey('households.id'), nullable=False)
+    is_shared = db.Column(db.Boolean, default=True)
+    household_id = db.Column(db.Integer, db.ForeignKey('households.id'), nullable=True)
     created_by_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     created_at = db.Column(
     db.DateTime(timezone=True),
@@ -152,3 +154,13 @@ class ActivityLog(db.Model):
     db.DateTime(timezone=True),
     default=lambda: datetime.now(tz)
     )
+
+class FCMToken(db.Model):
+    __tablename__ = 'fcmtoken'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    token = db.Column(db.String(500), nullable=False)
+
+    def __repr__(self):
+        return f"<FCMToken user_id={self.user_id}>"
