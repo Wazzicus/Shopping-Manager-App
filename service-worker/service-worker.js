@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_VERSION = 'shopping-manager-cache-v1.2.1';
+const CACHE_VERSION = 'shopping-manager-cache-v1.3.1';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const STATIC_ASSETS = ["/",
