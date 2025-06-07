@@ -43,6 +43,7 @@ class User(db.Model, UserMixin):
     created_lists = db.relationship('ShoppingList', backref='creator', lazy=True)
     added_items = db.relationship('ListItem', backref='added_by', lazy=True)
     activities = db.relationship('ActivityLog', backref='user', lazy=True)
+    push_tokens = db.relationship('FCMToken', backref='user', lazy=True)
 
     def get_avatar_url(self):
         """

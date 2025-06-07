@@ -4,10 +4,13 @@ utils.py
 This module contains utility functions for the Shopping Manager app:
 - Logging user activities to the database
 - Formatting human-readable descriptions for those activities
+- Sending notifications to household members via Firebase Cloud Messaging (FCM)
 """
 
 from app.extensions import db
-from app.models import ActivityLog
+from app.models import ActivityLog, User, Household
+from firebase_admin import messaging
+import firebase
 
 
 def log_activity(user_id, household_id, action_type, timestamp, item_name=None, list_name=None, new_name=None, old_name=None):
@@ -44,14 +47,6 @@ def format_action(action_type, item_name=None, list_name=None, new_name=None, ol
 
     elif action_type == "Item Deletion":
         return f"Deleted '{item_name}' from {list_name}." if item_name else "Deleted an item."
-
-    elif action_type == "Item Renaming":
-        if old_name and new_name:
-            return f"Renamed '{old_name}' to '{new_name}'."
-        elif new_name:
-            return f"Renamed an item to '{new_name}'."
-        else:
-            return "Renamed an item."
 
     elif action_type == "Household Creation":
         return "Created the household."
@@ -103,3 +98,38 @@ def format_action(action_type, item_name=None, list_name=None, new_name=None, ol
         
     else:
         return f"Performed the action: {action_type}"
+    
+
+def notify_household_members(actor_user_id, household_id, message_body):
+    # Get the household ID
+    household_id = household_id
+
+    # Get users in the same household
+    members = User.query.join(Household).filter(
+        Household.household_id == household_id,
+        User.id != actor_user_id
+    ).all()
+
+    # Get all FCM tokens for those users
+    tokens = []
+    for member in members:
+        for token_obj in member.push_tokens:
+            tokens.append(token_obj.token)
+
+    # Batch send the notification
+    if tokens:
+        
+        message = messaging.MulticastMessage(
+                tokens=tokens,
+                notification=messaging.Notification(
+                    title="Household Update",
+                    body=message_body
+                )
+            )
+        
+        try:
+            response = messaging.send_multicast(message)
+            print(f"✅ Notifications sent: {response.success_count}, Failed: {response.failure_count}")
+        except messaging.FirebaseError as e:
+            print(f"Error sending notification: {e}")
+

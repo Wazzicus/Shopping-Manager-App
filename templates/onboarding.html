@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta name="theme-color" content="#0dcaf0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Shopping Manager">
+    <meta name="mobile-web-app-capable" content="yes">
+        
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="/static/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/static/icons/favicon.svg" />
+    <link rel="shortcut icon" href="/static/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+        
+    <title>Welcome to Shopping Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/onboarding.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="onboarding-container" id="onboardingContainer">
+
+        <div class="onboarding-header">
+            <button class="skip-btn" onclick="skipOnboarding()">Skip</button>
+            <div class="page-indicator">
+                <div class="dot active" data-page="0"></div>
+                <div class="dot" data-page="1"></div>
+                <div class="dot" data-page="2"></div>
+                <div class="dot" data-page="3"></div>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar" style="width: 25%"></div>
+        </div>
+
+        <div class="carousel-container">
+            <div class="carousel-wrapper" id="carouselWrapper">
+                <div class="onboarding-slide">
+                    <div class="slide-card active">
+                        <div class="slide-icon"><i class="bi bi-list-check fs-2"></i></div>
+                        <h2 class="slide-title">Welcome</h2>
+                        <p class="slide-description">>Add-as-you-go and your lists will remember the items for your next shopping trip.</p>
+                    </div>
+                </div>
+
+                <div class="onboarding-slide">
+                    <div class="slide-card">
+                        <div class="slide-icon"><i class="bi bi-list-check fs-2"></i></div>
+                        <h2 class="slide-title">Smart Shopping Lists</h2>
+                        <p class="slide-description">Add-as-you-go and your lists will remember the items for your next shopping trip.</p>
+                    </div>
+                </div>
+
+                <div class="onboarding-slide">
+                    <div class="slide-card">
+                        <div class="slide-icon"><i class="bi bi-people fs-2"></i></div>
+                        <h2 class="slide-title">Family Collaboration</h2>
+                        <p class="slide-description">Share lists with family members, assign tasks, and coordinate shopping trips. Everyone stays in sync with real-time updates.</p>
+                    </div>
+                </div>
+
+                <div class="onboarding-slide">
+                    <div class="slide-card">
+                        <div class="slide-icon"><i class="bi bi-arrow-repeat fs-2"></i></div>
+                        <h2 class="slide-title">Real-time Sync</h2>
+                        <p class="slide-description">All your lists are automatically synced across all your devices and are available for anyone in your household.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="onboarding-navigation">
+            <button class="nav-btn" id="prevBtn" disabled onclick="previousSlide()">Previous</button>
+            <button class="nav-btn primary" id="nextBtn" onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/onboarding.js') }}"></script>
+</body>
+</html>

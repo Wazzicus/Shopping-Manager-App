@@ -11,8 +11,9 @@ Routes:
 """
 
 import os
-from flask import Blueprint, render_template, url_for, flash, redirect, send_from_directory
+from flask import Blueprint, render_template, url_for, flash, redirect, send_from_directory, request, jsonify
 from flask_login import login_required, current_user
+from app.extensions import db
 from app.models import Household as HouseholdModel, ShoppingList as ShoppingListModel, ActivityLog, ListItem as ListItemModel, FCMToken
 from app.utils import format_action
 from app.shopping_lists.forms import ShoppingListForm
@@ -25,6 +26,13 @@ def index():
     Public landing page.
     """
     return render_template('index.html')
+
+@main.route('/onboarding')
+def onboarding():
+    """
+    Onboarding page for mobile.
+    """
+    return render_template("onboarding.html")    
 
 
 @main.route('/dashboard')
@@ -62,16 +70,6 @@ def dashboard():
     ).order_by(
         ShoppingListModel.created_at.desc()
     ).all()
-    # shared_lists = ShoppingListModel.query.filter_by(
-    #     household_id=household_id, is_shared=True
-    # ).order_by(
-    #     ShoppingListModel.created_at.desc()
-    # ).all()
-    # personal_lists = ShoppingListModel.query.filter_by(
-    #     user_id=current_user.id,is_shared=False
-    # ).order_by(
-    #     ShoppingListModel.created_at.desc()
-    # ).all()
 
     # Fetch 5 most recent activities
     recent_activity = ActivityLog.query.filter_by(
@@ -96,24 +94,28 @@ def serviceworker():
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
     return send_from_directory(root, 'service-worker/service-worker.js')
 
+@main.route('/firebase-messaging-sw.js')
+def firebaseserviceworker():
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+    return send_from_directory(root, 'service-worker/firebase-messaging-sw.js')
+
 @main.route('/offline')
 def offline():
     return render_template("offline.html")
 
 @main.route('/store-token', methods=['POST'])
-@login_required
 def store_token():
     data = request.get_json()
-    token = data.get("token")
-    if not token:
-        return jsonify({"error": "Missing token"}), 400
+    token = data.get('token')
 
-    existing = FCMToken.query.filter_by(user_id=current_user.id).first()
-    if existing:
-        existing.token = token
-    else:
-        new_token = FCMToken(user_id=current_user.id, token=token)
-        db.session.add(new_token)
-    db.session.commit()
-
-    return jsonify({"success": True})
+    if token:
+        # Store it (tie to user if authenticated)
+        user_id = current_user.id if current_user.is_authenticated else None
+        if user_id:
+            existing_token = FCMToken.query.filter_by(user_id=user_id, token=token).first()
+            if existing_token:
+                return jsonify({"status": "already exists"}), 200
+        db.session.add(FCMToken(token=token, user_id=user_id))
+        db.session.commit()
+        return jsonify({"status": "success"})
+    return jsonify({"error": "No token provided"}), 400

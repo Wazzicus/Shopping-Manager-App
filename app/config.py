@@ -13,16 +13,16 @@ class Config:
     Base configuration class.
     """
     # Flask secret key (used for sessions, CSRF protection, etc.)
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'jDf#8PzL3rQ!2vXs@5TkW9^mNzH7aEY%UbV0oCMp&RgIqA1dFbJxG$ZKi^lueS')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
     # Database connection URI
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI', 'sqlite:///shopping_manager.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
     # Disable modification tracking for SQLAlchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Folder where avatar images are stored
-    UPLOAD_FOLDER = 'static/images/avatars'
+    UPLOAD_FOLDER = 'images/avatars'
 
     # Allowed file extensions for image uploads
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}

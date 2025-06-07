@@ -14,7 +14,7 @@ from flask_login import login_required, current_user
 from app.extensions import db
 from app.models import Household as HouseholdModel, User as UsersModel
 from app.household.forms import HouseholdCreationForm, HouseholdJoinForm
-from app.utils import log_activity
+from app.utils import log_activity, notify_household_members
 import secrets, logging
 from tzlocal import get_localzone
 from datetime import datetime
@@ -54,7 +54,7 @@ def setup():
             current_user.role = 'admin'
             db.session.commit()
 
-            log_successful = True
+            notify_household_members(current_user.id, household.id, f"{current_user.username} joined your household!")
             try:
                 log_activity(user_id=current_user.id, 
                              household_id=household.id, 
@@ -62,12 +62,7 @@ def setup():
                              timestamp=datetime.now(tz))
             except Exception as e:
                 logging.exception(f"Failed to log household creation activity: {e}")
-                log_successful = False
-            
-            if log_successful:
-                flash('Household created successfully!', 'success')
-            else:
-                flash('Household created, but logging the activity failed. Please contact support if issues persist.', 'warning')
+                
             
             return redirect(url_for("main.dashboard"))
 
@@ -177,6 +172,8 @@ def remove_member(user_id_to_remove):
         db.session.rollback()
         logging.exception(f"Error removing member {user_id_to_remove} from household {household_id_for_log}: {e}")
         return jsonify({'success': False, 'error': "A server error occurred while removing the member."}), 500
+    
+    notify_household_members(current_user.id, household.id, f"{removed_member_username} was removed from the household by {admin.username}.")
 
     try:
         log_activity(
@@ -187,6 +184,7 @@ def remove_member(user_id_to_remove):
         )
     except Exception as e:
         logging.exception(f"Failed to log member removal activity: {e}")
+
 
     return jsonify({
         "success": True,
@@ -226,6 +224,8 @@ def rename(household_id):
         except Exception as e:
 
             logging.exception(f"Failed to log activity: {e}")
+
+        notify_household_members(current_user.id, household.id, f"{current_user.username} renamed the household to '{new_name}'.")    
 
         return jsonify({ 'success': True, 'message': 'Household renamed successfully', 'new_name': new_name}), 200
     else:
@@ -361,6 +361,8 @@ def leave():
                 logging.exception(f"Error during admin leave & transfer for household {household_id_for_log}: {e}")
                 return jsonify({'success': False, 'error': "A server error occurred during the admin transfer process."}), 500
 
+            notify_household_members(user_to_leave.id, household_id_for_log, f"{user_to_leave.username} has left the household. {new_admin.username} is now the administrator.")
+
             try:
                 log_activity(
                     user_id=user_to_leave.id,
@@ -390,6 +392,8 @@ def leave():
             db.session.rollback()
             logging.exception(f"Error during member leave for household {household_id_for_log}: {e}")
             return jsonify({'success': False, 'error': "A server error occurred while leaving the household."}), 500
+        
+        notify_household_members(user_to_leave.id, household_id_for_log, f"{user_to_leave.username} has left the household.")
         
         try:
             log_activity(

@@ -2,15 +2,22 @@
 <html lang="en" data-theme="light">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        
+        <meta name="theme-color" content="#0dcaf0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="Shopping Manager">
+        <meta name="mobile-web-app-capable" content="yes">
+        
         <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
         <link rel="icon" type="image/png" href="/static/icons/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/static/icons/favicon.svg" />
         <link rel="shortcut icon" href="/static/icons/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-title" content="Shopping Manager" />
         <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+        
         <title>
             {% block title %}
             {{ title | default('Shopping Manager') }}
@@ -23,124 +30,83 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
-        <meta name="theme-color" content="#0dcaf0">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="mobile-web-app-capable" content="yes">
         <link href="{{ url_for('static', filename='gen/css/main.min.css') }}" rel="stylesheet">
+        
     </head>
-    <body class="bg-light">
-        <!--Nav Bar-->
-        <div class="container px-0 sticky-top" style="margin: 0 auto; margin-top: 0.5rem;">
-            <div class="row">
-                <div class="col-12 px-0">
-                    <nav class="navbar navbar-expand-lg " role="navigation" aria-label="Main navigation">
-                        <div class="container">
-                            <div class="logo">
-                                <a class="nav-link" href="{{ url_for('main.index' )}}">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M7 18C8.10457 18 9 17.1046 9 16C9 14.8954 8.10457 14 7 14C5.89543 14 5 14.8954 5 16C5 17.1046 5.89543 18 7 18Z" fill="#0dcaf0"/>
-                                        <path d="M17 18C18.1046 18 19 17.1046 19 16C19 14.8954 18.1046 14 17 14C15.8954 14 15 14.8954 15 16C15 17.1046 15.8954 18 17 18Z" fill="#0dcaf0"/>
-                                        <path d="M3 4H5L5.6 7M5.6 7L7 14H17L19 7H5.6Z" stroke="#0dcaf0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <span>Shopping Manager</span>
-                                </a>
-                            </div>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav ms-auto">
-                                    {% if current_user.is_authenticated %}
-                                    <li class="nav-item mx-2"> 
-                                        
-                                    </li>
-                                    {% if current_user.household_id %}
-                                    <li class="nav-item"><a class="nav-link {% if request.endpoint == 'main.dashboard' %} active{% endif %}" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-                                    <li class="nav-item">
-                                        <a class="nav-link {% if request.endpoint == 'household_bp.view' and request.view_args and request.view_args.get('household_id')|int == current_user.household_id %} active{% endif %}"
-                                        href="{{ url_for('household_bp.view', household_id=current_user.household_id) }}">Household</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link {% if request.endpoint == 'settings_bp.account_settings' %} active{% endif %}" href="{{ url_for('settings_bp.account_settings') }}">Settings</a></li>
-                                    {% endif %}
-                                    <li class="nav-item">
-                                        <form method="POST" action="{{ url_for('auth.logout')}}" class="d-inline" id="logoutForm">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                            <button type="submit" class="nav-link">Logout</button>
-                                        </form>
-                                    </li>
-                                    {% else %}
-                                    <li class="nav-item"><a class="nav-link" href="{{url_for('auth.auth') + '#login' }}">Login</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{url_for('auth.auth') + '#register' }}">Register</a></li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
+    <body>
+        <!-- Top Header -->
+        <header class="top-header safe-area-top">
+            <a href="{{ url_for('main.index') }}" class="app-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 18C8.10457 18 9 17.1046 9 16C9 14.8954 8.10457 14 7 14C5.89543 14 5 14.8954 5 16C5 17.1046 5.89543 18 7 18Z" fill="#0dcaf0"/>
+                    <path d="M17 18C18.1046 18 19 17.1046 19 16C19 14.8954 18.1046 14 17 14C15.8954 14 15 14.8954 15 16C15 17.1046 15.8954 18 17 18Z" fill="#0dcaf0"/>
+                    <path d="M3 4H5L5.6 7M5.6 7L7 14H17L19 7H5.6Z" stroke="#0dcaf0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Shopping Manager</span>
+            </a>
+            <div class="header-actions">
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('settings_bp.account_settings') }}" class="header-btn {% if request.endpoint == 'settings_bp.account_settings' %}active{% endif %}">
+                    <i class="bi bi-gear"></i>
+                </a>
+                {% endif %}
             </div>
-        </div>
+        </header>
+
+        <!-- Page Loader -->
         <div class="page-loader hidden" id="pageLoader">
             <div class="dots-container">
-              <div class="dot pulse"></div>
-              <div class="dot pulse"></div>
-              <div class="dot pulse"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
         </div>
 
         <!-- Flash Messages -->
-         <div class="container py-4 mt-3">
+        <div class="flash-messages">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show " id="flashMessage" role="alert">
-                {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" id="flashMessage" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
         </div>
 
-        <main class="container py-4">
+        <!-- Main Content -->
+        <main class="main-content">
             {% block content %}
-            
+            <!-- Your page content goes here -->
             {% endblock %}
         </main>
 
-        <div class="container px-0 " style="margin: 0 auto; margin-bottom: 0.5rem;">
-            <div class="row">
-                <div class="col-12 px-0">
-                    <footer class=" text-dark py-3 mt-auto" id="foooter">
-                        <div class="container-fluid">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="footer-logo">
-                                    <a class="nav-link" href="{{ url_for('main.index' )}}">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M7 18C8.10457 18 9 17.1046 9 16C9 14.8954 8.10457 14 7 14C5.89543 14 5 14.8954 5 16C5 17.1046 5.89543 18 7 18Z" fill="#0dcaf0"/>
-                                            <path d="M17 18C18.1046 18 19 17.1046 19 16C19 14.8954 18.1046 14 17 14C15.8954 14 15 14.8954 15 16C15 17.1046 15.8954 18 17 18Z" fill="#0dcaf0"/>
-                                            <path d="M3 4H5L5.6 7M5.6 7L7 14H17L19 7H5.6Z" stroke="#0dcaf0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <span>Shopping Manager</span>
-                                    </a>
-                                </div>
-                                <div class="text-md-end">
-                                    <p class="mb-0">
-                                        &copy;
-                                        <span id="year"></span>
-                                        <a class="footer-text text-dark" href="{{ url_for('main.index') }}">Shopping Manager.</a> 
-                                        All rights reserved.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
-            </div>
-        </div>
-    
+        <!-- Bottom Navigation -->
+        {% if current_user.is_authenticated and current_user.household_id %}
+        <nav class="bottom-nav safe-area-bottom">
+            <a href="{{ url_for('main.dashboard') }}" 
+               class="nav-item-bottom {% if request.endpoint == 'main.dashboard' %}active{% endif %}">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item-bottom">
+                <i class="bi bi-plus-circle"></i>
+                <span>Add</span>
+            </a>
+            <a href="{{ url_for('household_bp.view', household_id=current_user.household_id) }}" 
+               class="nav-item-bottom {% if request.endpoint == 'household_bp.view' and request.view_args and request.view_args.get('household_id')|int == current_user.household_id %}active{% endif %}">
+                <i class="bi bi-house"></i>
+                <span>Household</span>
+            </a>
+        </nav>
+        {% endif %}
 
-        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100"></div>
+        <!-- Toast Container -->
+        <div class="toast-container"></div>
 
+        <!-- Toast Template -->
         <template id="toastTemplate">
             <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
@@ -148,12 +114,11 @@
                     <small class="text-muted toast-timestamp">Just now</small>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div class="toast-body">
-
-                </div>
+                <div class="toast-body"></div>
             </div>
         </template>
 
+        <!-- Confirmation Modal -->
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
             <div class="modal-dialog" id="confirmModalDialog">
                 <div class="modal-content" id="confirmModalContent">
@@ -171,10 +136,12 @@
                 </div>
             </div>
         </div>
-    
+
         {% block scripts %}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        
+        <!-- Service Worker Registration -->
         <script>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
@@ -188,33 +155,73 @@
                 });
             }
         </script>
+        
+        <!-- Firebase Scripts -->
         <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-        <script src= "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
         <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/static/firebase-messaging-sw.js')
-            .then((registration) => {
-                console.log("Service Worker registered");
-
-                // Reinitialize messaging with the registration
-                getToken(messaging, {
-                vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk",
-                serviceWorkerRegistration: registration
-                }).then((currentToken) => {
-                if (currentToken) {
-                    console.log("Token with registered SW:", currentToken);
-                    fetch("/store-token", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ token: currentToken }),
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('{{ url_for("main.firebaseserviceworker") }}')
+                .then((registration) => {
+                    console.log("Service Worker registered");
+                    
+                    // Reinitialize messaging with the registration
+                    getToken(messaging, {
+                        vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk",
+                        serviceWorkerRegistration: registration
+                    }).then((currentToken) => {
+                        if (currentToken) {
+                            console.log("Token with registered SW:", currentToken);
+                            fetch("/store-token", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ token: currentToken }),
+                            });
+                        }
                     });
-                }
-                });
-            })
-            .catch((err) => console.error("Service Worker registration failed:", err));
-        }
+                })
+                .catch((err) => console.error("Service Worker registration failed:", err));
+            }
         </script>
         <script type="module" src="{{ url_for('static', filename='js/firebase-init.js') }}"></script>
+        
+        <!-- Mobile-specific JavaScript -->
+        <script>
+            // Prevent zoom on double tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Handle safe area insets
+            function updateSafeAreas() {
+                const root = document.documentElement;
+                const safeAreaTop = getComputedStyle(root).getPropertyValue('--sat') || '0px';
+                const safeAreaBottom = getComputedStyle(root).getPropertyValue('--sab') || '0px';
+                
+                // Apply safe areas to elements
+                document.querySelectorAll('.safe-area-top').forEach(el => {
+                    el.style.paddingTop = `calc(${el.style.paddingTop || '0px'} + ${safeAreaTop})`;
+                });
+                
+                document.querySelectorAll('.safe-area-bottom').forEach(el => {
+                    el.style.paddingBottom = `calc(${el.style.paddingBottom || '0px'} + ${safeAreaBottom})`;
+                });
+            }
+            
+            // Notification function placeholder
+            function showNotifications() {
+                // Implement notification panel
+                console.log('Show notifications');
+            }
+            
+            // Initialize on load
+            document.addEventListener('DOMContentLoaded', updateSafeAreas);
+        </script>
         {% endblock %}
     </body>
 </html>

@@ -11,6 +11,7 @@ Responsibilities:
 """
 
 from flask import Flask
+from dotenv import load_dotenv
 import os
 
 # Route blueprints
@@ -29,6 +30,8 @@ from .config import Config
 
 # Extensions
 from app.extensions import db, bcrypt, login_manager, migrate, csrf
+
+from app.firebase import initialize_firebase
 
 # Configure Flask-Login defaults
 login_manager.login_view = 'auth.auth'  # Redirect to this endpoint if not logged in
@@ -56,14 +59,19 @@ def create_app():
         static_folder=os.path.abspath("static")
     )
 
+    load_dotenv()  # Load environment variables from .env file
+
     # Register Assets
     register_assets(app)
+
+    # Initialize Firebase
+    initialize_firebase()
 
     # Load configuration (default: from Config class)
     app.config.from_object(Config)
 
     # Setup upload folder paths
-    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/images/uploads')
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath("static/images"), 'uploads')
     app.config['AVATAR_FOLDER'] = os.path.join(app.config['UPLOAD_FOLDER'], 'avatars')
 
     # Create upload directories if they don't already exist

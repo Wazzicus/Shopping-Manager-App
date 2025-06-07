@@ -13,7 +13,7 @@ from flask_login import login_required, current_user
 from app.extensions import db
 from app.models import ShoppingList as ShoppingListModel, ListItem as ListItemModel
 from app.shopping_lists.forms import AddItemForm, EditShoppingListForm, EditItemForm
-from app.utils import log_activity
+from app.utils import log_activity, notify_household_members
 import logging
 from datetime import datetime
 from tzlocal import get_localzone
@@ -60,7 +60,7 @@ def create_list():
         msg = f"A list named '{list_name}' already exists."
         return jsonify({"success": False, "message": msg}), 400 if is_ajax else flash(msg, 'error')
 
-    is_shared = list_type.lower() == 'shared' if list_type else False    
+    is_shared = True    
 
     try:
         new_list = ShoppingListModel(
@@ -71,6 +71,9 @@ def create_list():
         )
         db.session.add(new_list)
         db.session.commit()
+
+        notify_household_members(current_user.id, current_user.household_id, f"{current_user.username} created a new list: {new_list.name}.")
+        
         log_activity(user_id=current_user.id, household_id=current_user.household_id, action_type="List Creation", timestamp=datetime.now(tz), list_name=new_list.name)
 
         if is_ajax:
@@ -233,6 +236,8 @@ def delete_list(list_id):
         list_name = shopping_list.name
         db.session.delete(shopping_list)
         db.session.commit()
+
+        notify_household_members(current_user.id, current_user.household_id, f"{current_user.username} deleted the list '{list_name}'.")
 
         log_activity(user_id=current_user.id, household_id=current_user.household_id, action_type="List Deletion", timestamp=datetime.now(tz), list_name=list_name)
         return jsonify({"success": True, "message": f'"{list_name}" deleted.'})

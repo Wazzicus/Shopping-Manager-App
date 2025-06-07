@@ -1,80 +1,80 @@
-// service-worker.js
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js');
 
-const CACHE_VERSION = 'shopping-manager-cache-v1.6.1';
-const STATIC_CACHE = `static-${CACHE_VERSION}`;
-const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
-const STATIC_ASSETS = ["/",
-    "/offline",
-    "/static/gen/css/main.min.css",
-    "/static/js/main.js",
-    "/static/js/dashboard.js",
-    "/static/icons/favicon.ico",
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
-    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
-    "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-    "/static/manifest.json"
-];
+if (workbox) {
+    console.log('Workbox is loaded');
+    
+    // Set up precaching
+    workbox.precaching.precacheAndRoute(
+        [
+            { url: '/', revision: null },
+            { url: '/offline', revision: null },
+            { url: '/static/js/main.js', revision: null },
+            { url: '/static/gen/css/main.min.css', revision: null },
+            { url: '/static/images/logo.svg', revision: null },
+            { url: '/static/icons/favicon.ico', revision: null },
+            { url: '/static/manifest.json', revision: null },
+        ]);
 
-// Pre-caching of essential static assets.
-self.addEventListener("install", event => {
-    event.waitUntil(
-        caches.open(STATIC_CACHE).then(cache => {
-            return cache.addAll(STATIC_ASSETS);
+    const { CacheableResponsePlugin } = workbox.cacheableResponse;
+
+    // Cache API responses
+    workbox.routing.registerRoute(
+        ({ request }) => request.destination === 'document' || request.destination === 'script',
+        new workbox.strategies.CacheFirst({
+        cacheName: 'images-cache',
+        plugins: [
+        new CacheableResponsePlugin({
+            statuses: [0, 200],
+        }),
+        ],
+    })
+    );
+    
+    // Cache CSS and JS files
+    workbox.routing.registerRoute(
+        /\.(?:css|js)$/,
+        new workbox.strategies.StaleWhileRevalidate({
+        cacheName: 'static-resources',
         })
     );
-});
+    
+    // Cache images
+    workbox.routing.registerRoute(
+    ({ request }) => request.destination === 'image',
+    new workbox.strategies.CacheFirst({
+        cacheName: 'images-cache',
+        plugins: [
+        new CacheableResponsePlugin({
+            statuses: [0, 200],
+        }),
+        ],
+    })
+    );
 
-// Activate event to clean up old caches.
-self.addEventListener("activate", event => {
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.filter(cacheNames => 
-                    cacheNames !== STATIC_CACHE && cacheNames !== DYNAMIC_CACHE).map(cacheName => 
-                    caches.delete(cacheName))
-                );
+    // Cache fonts
+    workbox.routing.registerRoute(
+        ({ url }) =>
+            url.origin.startsWith('https://fonts.googleapis.com') ||
+            url.origin.startsWith('https://fonts.gstatic.com'),
+        new workbox.strategies.CacheFirst({
+            cacheName: 'font-cache',
+            plugins: [
+                new workbox.expiration.ExpirationPlugin({
+                    maxEntries: 20,
+                    maxAgeSeconds: 365 * 24 * 60 * 60, // 1 Year
+                }),
+            ],
         })
     );
-});
 
-// Network-first Cache(For Dashboard and Shared Lists)
-self.addEventListener("fetch", event => {
-    const url = new URL(event.request.url);
-    if (url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/shopping/lists/')) {
-        event.respondWith(networkFirst(event.request));
+    // Fallback to offline page
+    workbox.routing.setCatchHandler(({ event }) => {
+        if (event.request.mode === 'navigate') {
+            return caches.match('/offline');
+        }
+        return Response.error();
+    });
+    
+    } else {
+    console.log('Workbox failed to load');
     }
-
-    else if(STATIC_ASSETS.includes(url.href) || STATIC_ASSETS.includes(url.pathname)) {
-        event.respondWith(cacheFirst(event.request));
-    }
-
-    else {
-        event.respondWith(
-            fetch(event.request).catch(() => {
-                if (event.request.destination === "document") {
-                    return caches.match("/offline");
-                }
-            })
-        );
-    }
-});
-
-// Cache-first strategy function
-async function cacheFirst(request) {
-    const cache = await caches.open(STATIC_CACHE);
-    const cachedResponse = await cache.match(request);
-    return cachedResponse || fetch(request);
-}
-
-// Network-first strategy function
-async function networkFirst(request) {
-    const cache = await caches.open(DYNAMIC_CACHE);
-    try {
-        const networkResponse = await fetch(request);
-        cache.put(request.url, networkResponse.clone());
-        return networkResponse;
-    } catch (error) {
-        const cachedResponse = await cache.match(request);
-        return cachedResponse || caches.match("/offline");
-    }
-}

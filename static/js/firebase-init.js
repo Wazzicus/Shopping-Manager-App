@@ -1,6 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
+// /static/js/firebase-init.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
 
+// Replace with your config
 const firebaseConfig = {
   apiKey: "AIzaSyDAj6vfmLKMGwasNZ1eRLjy-9f7m0xVGOs",
   authDomain: "shopping-manager-app.firebaseapp.com",
@@ -13,46 +15,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-async function initFCM() {
+// Ask for permission and get token
+export async function initPush() {
   try {
     const permission = await Notification.requestPermission();
-    if (permission !== "granted") {
-      console.warn("Notifications denied.");
-      return;
-    }
+    if (permission === "granted") {
+      const swRegistration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+      const token = await getToken(messaging, {
+        vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk",
+        serviceWorkerRegistration: swRegistration
+      });
+      console.log("✅ FCM Token:", token);
 
-    const registration = await navigator.serviceWorker.register("/static/firebase-messaging-sw.js");
-    console.log("Service Worker registered:", registration);
-
-    const token = await getToken(messaging, {
-      vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk",
-      serviceWorkerRegistration: registration,
-    });
-
-    if (token) {
-      console.log("FCM Token:", token);
-      // Send to backend
+      // Send token to Flask
       await fetch("/store-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
       });
     } else {
-      console.warn("No token returned.");
+      console.warn("Notifications permission denied.");
     }
-  } catch (error) {
-    console.error("Error initializing FCM:", error);
+  } catch (err) {
+    console.error("FCM init failed:", err);
   }
 }
 
-// Show toast for foreground notifications
+// Handle foreground notifications
 onMessage(messaging, (payload) => {
-  console.log("Foreground message:", payload);
-  if (payload?.notification) {
-    const { title, body } = payload.notification;
-    alert(`${title}\n${body}`); // replace with toast in production
-  }
+  console.log("📨 Foreground notification:", payload);
+  showToast(payload.notification.title + "\n" + payload.notification.body);
 });
-
-// Call init on page load
-window.addEventListener("load", initFCM);

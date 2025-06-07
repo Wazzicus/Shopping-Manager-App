@@ -1,4 +1,9 @@
 venv/
-static/gen/
+.venv/
 static/.webassets-cache
 *.pyc
+secrets/
+.env
+__pycache__/
+*.py[cod]
+*$py.class

@@ -150,6 +150,12 @@
             Leave Household
         </button>
     </div>
+    <form method="POST" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn btn-danger w-100">
+            <span>Logout</span>
+        </button>
+    </form>
 </div>       
 {% endblock %}
 {% block scripts %}
