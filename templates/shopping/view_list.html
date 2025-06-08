@@ -24,29 +24,29 @@
         </div>
         {% set percentage = completion_percentage | default(0) %}
         <div class="progress-section mt-2">
-             <div class="d-flex justify-content-between align-items-center mb-1">
-                 <span class="text-muted small">Completion</span>
-                 <span class="text-muted small" id="progressPercentageLabel">{{ percentage | round | int }}%</span>
-             </div>
-             {% set gap_width_px = 4 %}
-             <div class="custom-progress-track"
-                  role="progressbar"
-                  aria-label="List completion progress"
-                  aria-valuenow="{{ percentage | round | int }}"
-                  aria-valuemin="0"
-                  aria-valuemax="100">
-                 <div class="custom-progress-filled" style="width: {{ percentage }}%;"></div>
-                 {% if percentage > 0 and percentage < 100 %}
-                     <div class="custom-progress-gap" style="width: {{ gap_width_px }}px;"></div>
-                 {% else %}
-                     <div class="custom-progress-gap" style="display: none; width: {{ gap_width_px }}px;"></div>
-                 {% endif %}
-                 {% set unfilled_width_expression = "100% - " ~ percentage ~ "%" %}
-                 {% if percentage > 0 and percentage < 100 %}
-                     {% set unfilled_width_expression = unfilled_width_expression ~ " - " ~ gap_width_px ~ "px" %}
-                 {% endif %}
-                 <div class="custom-progress-unfilled" style="width: calc({{ unfilled_width_expression }}); flex-basis: calc({{ unfilled_width_expression }});"></div>
-             </div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted small">Completion</span>
+                <span class="text-muted small" id="progressPercentageLabel">{{ percentage | round | int }}%</span>
+            </div>
+            {% set gap_width_px = 4 %}
+            <div class="custom-progress-track" 
+            role="progressbar"
+            aria-label="List completion progress"
+            aria-valuenow="{{ percentage | round | int }}"
+            aria-valuemin="0"
+            aria-valuemax="100">
+                <div class="custom-progress-filled" style="width: {{ percentage }}%;"></div>
+                {% if percentage > 0 and percentage < 100 %}
+                    <div class="custom-progress-gap" style="width: {{ gap_width_px }}px;"></div>
+                {% else %}
+                    <div class="custom-progress-gap" style="display: none; width: {{ gap_width_px }}px;"></div>
+                {% endif %}
+                {% set unfilled_width_expression = "100% - " ~ percentage ~ "%" %}
+                {% if percentage > 0 and percentage < 100 %}
+                    {% set unfilled_width_expression = unfilled_width_expression ~ " - " ~ gap_width_px ~ "px" %}
+                {% endif %}
+                <div class="custom-progress-unfilled" style="width: calc({{ unfilled_width_expression }}); flex-basis: calc({{ unfilled_width_expression }});"></div>
+            </div>
         </div>
     </div>
     

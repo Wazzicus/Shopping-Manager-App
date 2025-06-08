@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    const csrfToken = getCSRFToken();
     const listContainer = document.getElementById('itemList');
     const listHeader = document.querySelector('.list-header');
     const addItemForm = document.getElementById('addItemForm');

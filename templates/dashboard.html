@@ -6,73 +6,73 @@
 
 {% block content %}
 <div class="container mt-2">
-    <div class="card sm-card mb-4">
-        <div class="card-header"><h5 class="mb-0">Welcome, {{ current_user.name | default('User') }}!</h5></div>
-        <div class="card-body">
-            <div class="profile-header d-flex flex-column flex-md-row align-items-center align-items-md-start">
-                <div class="text-center text-md-start mb-3 mb-md-0 me-md-3">
-                    <img src="{{ current_user.avatar_url }}"
-                        alt="{{ current_user.name }}'s avatar" 
-                        class="profile-pic-actual"
-                        onerror="this.onerror=null; this.src='https://api.dicebear.com/7.x/initials/svg?seed={{ current_user.name }}'">
-                </div>
+    <div class="row">
+        <div class="card sm-card mb-4">
+            <div class="card-header"><h5 class="mb-0">Welcome, {{ current_user.name | default('User') }}!</h5></div>
+            <div class="card-body">
+                <div class="profile-header d-flex flex-column flex-md-row align-items-center align-items-md-start">
+                    <div class="text-center text-md-start mb-3 mb-md-0 me-md-3">
+                        <img src="{{ current_user.avatar_url }}"
+                            alt="{{ current_user.name }}'s avatar" 
+                            class="profile-pic-actual"
+                            onerror="this.onerror=null; this.src='https://api.dicebear.com/7.x/initials/svg?seed={{ current_user.name }}'">
+                    </div>
 
-                <div class="profile-info w-100 w-md-auto me-md-auto mb-3 mb-md-0 text-center text-md-start">
-                    <p class="card-text mb-1">@{{ current_user.username }}</p>
-                    {% if current_user.household %}
-                    <small class="text-muted">Household: {{ current_user.household.name }}</small>
-                    {% else %}
-                    <small class="text-muted">Not currently in a household. <a href="{{ url_for('household_bp.setup')}}">Join or Create One!</a></small>
-                    {% endif %}
-                </div>
+                    <div class="profile-info w-100 w-md-auto me-md-auto mb-3 mb-md-0 text-center text-md-start">
+                        <p class="card-text mb-1">@{{ current_user.username }}</p>
+                        {% if current_user.household %}
+                        <small class="text-muted">Household: {{ current_user.household.name }}</small>
+                        {% else %}
+                        <small class="text-muted">Not currently in a household. <a href="{{ url_for('household_bp.setup')}}">Join or Create One!</a></small>
+                        {% endif %}
+                    </div>
 
-                <div class="profile-actions d-flex flex-column flex-sm-row align-items-sm-center w-100 w-md-auto justify-content-center">
-                    <a href="{{ url_for('settings_bp.account_settings') }}" class="btn btn-sm btn-outline-secondary mb-2 mb-sm-0 me-sm-2">
-                        <i class="bi bi-gear-fill"></i> Settings
-                    </a>
-                    {% if current_user.household and (is_admin or current_user.is_admin_of_household) %}
-                    <a href="{{ url_for('household_bp.manage_household', household_id=current_user.household_id) }}" class="btn btn-sm btn-outline-info">
-                        <i class="bi bi-people-fill"></i> Manage Household
-                    </a>
-                    {% endif %}
+                    <div class="profile-actions d-flex flex-column flex-sm-row align-items-sm-center w-100 w-md-auto justify-content-center">
+                        <a href="{{ url_for('settings_bp.account_settings') }}" class="btn btn-sm btn-outline-secondary mb-2 mb-sm-0 me-sm-2">
+                            <i class="bi bi-gear-fill"></i> Settings
+                        </a>
+                        {% if current_user.household and (is_admin or current_user.is_admin_of_household) %}
+                        <a href="{{ url_for('household_bp.manage_household', household_id=current_user.household_id) }}" class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-people-fill"></i> Manage Household
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-8">
-            <div class="card sm-card mb-4">
-                <div class="card-header">
-                    <div class="list-header-controls">
-                        <h2 class="h4 list-header-title">Your Shopping Lists</h2>
-                        <div class="header-actions-toolbar">
-                            <div class="header-action-group" id="headerQuickAddGroup">
-                                <div class="dashboard-new-list-container">
-                                    <form class="d-flex my-auto" role="New List" id="dashboardListAddForm" action="{{ url_for('shoppinglist_bp.create_list') }}" method="post">
-                                        {{ new_list_form.hidden_tag() }}
-                                        <div class="shopping-new-list-pill-container">
-                                        {{ new_list_form.name(class_='form-control' + (' is-invalid' if new_list_form.name.errors else ''), placeholder="Add a new list", id="dashboardNewListInput", type="text", aria_label="New List") }}
+        <div class="card sm-card mb-4">
+            <div class="card-header">
+                <div class="list-header-controls">
+                    <h2 class="h4 list-header-title">Your Shopping Lists</h2>
+                    <div class="header-actions-toolbar">
+                        <div class="header-action-group" id="headerQuickAddGroup">
+                            <div class="dashboard-new-list-container">
+                                <form class="d-flex my-auto" role="New List" id="dashboardListAddForm" action="{{ url_for('shoppinglist_bp.create_list') }}" method="post">
+                                    {{ new_list_form.hidden_tag() }}
+                                    <div class="shopping-new-list-pill-container">
+                                    {{ new_list_form.name(class_='form-control' + (' is-invalid' if new_list_form.name.errors else ''), placeholder="Add a new list", id="dashboardNewListInput", type="text", aria_label="New List") }}
 
-                                            <button class="btn btn-clear-custom" type="button" id="dashboardClearBtn2">
-                                                <i class="bi bi-x-lg"></i>
-                                            </button>
+                                        <button class="btn btn-clear-custom" type="button" id="dashboardClearBtn2">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
 
-                                            <button class="btn btn-new-list-custom expanded" type="submit" id="dashboardNewListBtn">
-                                                <span id="dashboardNewListSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                                    <i class="bi bi-plus-circle"></i>
-                                                    <span class="New-List-text">New List</span>
-                                            </button>
-                                        </div>
-                                        {% if new_list_form.name.errors %}
-                                        <div class="invalid-feedback">
-                                            {% for error in new_list_form.name.errors %}
-                                            <span> {{ error }}</span><br>
-                                            {% endfor %}
-                                        </div>
-                                        {% endif %}
-                                    </form>
-                                </div>
+                                        <button class="btn btn-new-list-custom expanded" type="submit" id="dashboardNewListBtn">
+                                            <span id="dashboardNewListSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                <i class="bi bi-plus-circle"></i>
+                                                <span class="New-List-text">New List</span>
+                                        </button>
+                                    </div>
+                                    {% if new_list_form.name.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in new_list_form.name.errors %}
+                                        <span> {{ error }}</span><br>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -128,30 +128,6 @@
                         <p class="card-text">You don't have any lists yet! Click 'New List' to get started.</p>
                     </div>
                     {% endif%}
-                </div>
-            </div>
-        </div>
-        
-
-        <div class="col-md-4">
-            <div class="card sm-card mb-4">
-                <div class="card-header">Recent Activity</div>
-                <div class="card-body">
-                    {% if recent_activity %}
-                    <ul class="list-group list-group-flush">
-                        {% for activity in recent_activity %}
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div>
-                            <strong>{{ activity.user.name }}</strong>
-                            <small class="text-muted d-block">{{ format_action(activity.action_type) }}</small>
-                            </div>
-                            <small class="text-muted text-nowrap utc-time" data-utc="{{ activity.timestamp.isoformat() }}">{{ activity.timestamp.strftime('%d %B %Y, %H:%M') }}</small>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <p class="card-text">No Activity Yet!</p>
-                    {% endif %}
                 </div>
             </div>
         </div>

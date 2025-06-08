@@ -55,6 +55,7 @@ def setup():
             db.session.commit()
 
             notify_household_members(current_user.id, household.id, f"{current_user.username} joined your household!")
+            
             try:
                 log_activity(user_id=current_user.id, 
                              household_id=household.id, 

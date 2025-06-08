@@ -25,15 +25,7 @@
     <link href="{{ url_for('static', filename='css/onboarding.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="bg-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-
-    <div class="particles" id="particles"></div>
-
+    
     <div class="onboarding-container" id="onboardingContainer">
 
         <div class="onboarding-header">
@@ -46,8 +38,27 @@
             </div>
         </div>
 
+        {% set percentage = completion_percentage | default(25) %}
         <div class="progress-container">
-            <div class="progress-bar" id="progressBar" style="width: 25%"></div>
+            {% set gap_width_px = 4 %}
+            <div class="custom-progress-track" 
+            role="progressbar"
+            aria-label="Onboarding completion progress"
+            aria-valuenow="{{ percentage | round | int }}"
+            aria-valuemin="25"
+            aria-valuemax="100">
+                <div class="custom-progress-filled" style="width: {{ percentage }}%;"></div>
+                {% if percentage > 0 and percentage < 100 %}
+                    <div class="custom-progress-gap" style="width: {{ gap_width_px }}px;"></div>
+                {% else %}
+                    <div class="custom-progress-gap" style="display: none; width: {{ gap_width_px }}px;"></div>
+                {% endif %}
+                {% set unfilled_width_expression = "100% - " ~ percentage ~ "%" %}
+                {% if percentage > 0 and percentage < 100 %}
+                    {% set unfilled_width_expression = unfilled_width_expression ~ " - " ~ gap_width_px ~ "px" %}
+                {% endif %}
+                <div class="custom-progress-unfilled" style="width: calc({{ unfilled_width_expression }}); flex-basis: calc({{ unfilled_width_expression }});"></div>
+            </div>
         </div>
 
         <div class="carousel-container">
@@ -56,7 +67,7 @@
                     <div class="slide-card active">
                         <div class="slide-icon"><i class="bi bi-list-check fs-2"></i></div>
                         <h2 class="slide-title">Welcome</h2>
-                        <p class="slide-description">>Add-as-you-go and your lists will remember the items for your next shopping trip.</p>
+                        <p class="slide-description">Add items to your lists as soon as you need to and your lists will remember them for your next shopping trip.</p>
                     </div>
                 </div>
 

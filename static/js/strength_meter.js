@@ -1,4 +1,5 @@
 // strength_meter.js
+
 document.addEventListener('DOMContentLoaded', () => {
     const newPassword = document.getElementById('newPassword');
     const confirmPassword = document.getElementById('confirmPassword');

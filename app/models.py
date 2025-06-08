@@ -98,7 +98,6 @@ class ShoppingList(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    is_shared = db.Column(db.Boolean, default=True)
     household_id = db.Column(db.Integer, db.ForeignKey('households.id'), nullable=True)
     created_by_user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     created_at = db.Column(

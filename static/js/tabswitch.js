@@ -1,4 +1,5 @@
 // tabswitch.js
+
 function setupToggleSlider(tabContainerId, sliderId) {
     const tabContainer = document.getElementById(tabContainerId);
     const slider = document.getElementById(sliderId);
