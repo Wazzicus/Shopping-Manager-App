@@ -95,23 +95,6 @@
                                     </td>
                                     <td class="text-end">
                                         <div class="d-flex flex-wrap justify-content-end gap-2">
-                                            <a href="{{ url_for('shoppinglist_bp.edit_list', list_id=list.id) }}"
-                                            class="btn btn-sm btn-outline-secondary" title="Edit List Name" id="eeditbtn">
-                                            <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <button type="submit"
-                                                class="btn btn-sm btn-outline-danger delete-list-btn"
-                                                title="Delete List"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#confirmModal"
-                                                data-modal-title="Confirm List Deletion"
-                                                data-modal-body="Are you sure you want to delete the list '{{ list.name | escape }}' and all its items? This cannot be undone."
-                                                data-modal-confirm-text="Delete List"
-                                                data-action-url="{{ url_for('shoppinglist_bp.delete_list', list_id=list.id) }}"
-                                                data-target-element-selector="#list-row-{{ list.id }}"
-                                                data-redirect-url="{{ url_for('main.dashboard') }}">
-                                            <i class="bi bi-trash"></i>
-                                            </button>
                                             <a href="{{ url_for('shoppinglist_bp.view_list', list_id=list.id) }}"
                                             class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye-fill"></i> <span class="d-none d-sm-inline">View</span>

@@ -106,7 +106,7 @@ def notify_household_members(actor_user_id, household_id, message_body):
 
     # Get users in the same household
     members = User.query.join(Household).filter(
-        Household.household_id == household_id,
+        Household.id == household_id,
         User.id != actor_user_id
     ).all()
 
