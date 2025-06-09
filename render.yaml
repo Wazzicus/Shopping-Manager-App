@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: Shopping-Manager
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn run:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
