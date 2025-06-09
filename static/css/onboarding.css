@@ -9,64 +9,11 @@ body {
     overflow: hidden;
     height: 100vh;
     width: 100vw;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0dcaf0 0%, #08a7c2 100%);
     position: relative;
 }
 
-.bg-shapes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 1;
-}
-
-.shape {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    animation: float 6s ease-in-out infinite;
-}
-
-.shape:nth-child(1) {
-    width: 80px;
-    height: 80px;
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.shape:nth-child(2) {
-    width: 120px;
-    height: 120px;
-    top: 60%;
-    right: 15%;
-    animation-delay: 2s;
-}
-
-.shape:nth-child(3) {
-    width: 60px;
-    height: 60px;
-    top: 80%;
-    left: 20%;
-    animation-delay: 4s;
-}
-
-.shape:nth-child(4) {
-    width: 100px;
-    height: 100px;
-    top: 10%;
-    right: 20%;
-    animation-delay: 1s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(180deg); }
-}
-
+/* Onboarding Container */
 .onboarding-container {
     position: relative;
     z-index: 10;
@@ -80,6 +27,7 @@ body {
     display: none;
 }
 
+/* Header */
 .onboarding-header {
     padding: 20px 30px;
     display: flex;
@@ -90,8 +38,8 @@ body {
 .skip-btn {
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     color: white;
     padding: 8px 16px;
     border-radius: 20px;
@@ -101,24 +49,17 @@ body {
     transition: all 0.3s ease;
 }
 
+.skip-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
 .page-indicator {
     display: flex;
     gap: 8px;
 }
 
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4);
-    transition: all 0.3s ease;
-}
-
-.dot.active {
-    background: white;
-    transform: scale(1.2);
-}
-
+/* Carousel Container */
 .carousel-container {
     flex: 1;
     position: relative;
@@ -141,10 +82,72 @@ body {
     text-align: center;
 }
 
+.logo-slide {
+    justify-content: space-evenly;
+    padding: 60px 40px;
+}
+
+.app-logo {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: white;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transform: scale(0.8) translateY(20px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-logo.animate {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.app-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    margin: 30px 0 16px;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: 0.2s;
+}
+
+.app-title.animate {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.app-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    font-weight: 400;
+    max-width: 280px;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: 0.4s;
+}
+
+.app-subtitle.animate {
+    transform: translateY(0);
+    opacity: 1;
+}
+
 .slide-card {
     background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     padding: 40px 30px;
@@ -165,7 +168,7 @@ body {
     width: 80px;
     height: 80px;
     margin: 0 auto 24px;
-    background: rgba(212, 144, 144, 0.2);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -190,6 +193,7 @@ body {
     font-weight: 400;
 }
 
+/* Navigation Buttons */
 .onboarding-navigation {
     padding: 30px;
     display: flex;
@@ -244,20 +248,67 @@ body {
     bottom: 120px;
     left: 30px;
     right: 30px;
+    height: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.progress-track {
+    flex: 1;
     height: 4px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
+    position: relative;
     overflow: hidden;
 }
 
-.progress-bar {
+.progress-fill {
     height: 100%;
     background: linear-gradient(90deg, #0dcaf0, #0bb5d8);
     border-radius: 2px;
-    transition: width 0.5s ease;
-    box-shadow: 0 0 10px rgba(13, 202, 240, 0.5);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(13, 202, 240, 0.4);
 }
 
+.progress-stop {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 2;
+}
+
+.progress-stop.completed {
+    background: #0dcaf0;
+    border-color: #0dcaf0;
+    box-shadow: 0 0 12px rgba(13, 202, 240, 0.6);
+    transform: scale(1.1);
+}
+
+.progress-stop.active {
+    background: white;
+    border-color: #0dcaf0;
+    box-shadow: 0 0 16px rgba(13, 202, 240, 0.8);
+    transform: scale(1.2);
+}
+
+.logo-slide .onboarding-navigation {
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: 0.6s;
+}
+
+.logo-slide .onboarding-navigation.animate {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Slide Animations */
 @keyframes slideInRight {
     from {
         transform: translateX(100px);
@@ -292,20 +343,34 @@ body {
     .slide-card {
         padding: 30px 25px;
     }
-            
+    
     .slide-icon {
         width: 60px;
         height: 60px;
         font-size: 28px;
         margin-bottom: 16px;
     }
-            
+    
     .slide-title {
         font-size: 24px;
         margin-bottom: 12px;
     }
-            
+    
     .slide-description {
         font-size: 14px;
+    }
+
+    .app-logo {
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
+    }
+
+    .app-title {
+        font-size: 28px;
+    }
+
+    .app-subtitle {
+        font-size: 16px;
     }
 }

@@ -16,7 +16,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
     # Database connection URI
-    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite:///shopping_manager.db')
 
     # Disable modification tracking for SQLAlchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = False

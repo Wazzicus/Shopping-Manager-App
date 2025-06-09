@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <meta name="theme-color" content="#0dcaf0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -17,71 +15,61 @@
     <link rel="shortcut icon" href="/static/icons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png" />
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-        
+    
     <title>Welcome to Shopping Manager</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/onboarding.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        
+    </style>
 </head>
 <body>
-    
     <div class="onboarding-container" id="onboardingContainer">
-
         <div class="onboarding-header">
             <button class="skip-btn" onclick="skipOnboarding()">Skip</button>
-            <div class="page-indicator">
-                <div class="dot active" data-page="0"></div>
-                <div class="dot" data-page="1"></div>
-                <div class="dot" data-page="2"></div>
-                <div class="dot" data-page="3"></div>
-            </div>
         </div>
 
-        {% set percentage = completion_percentage | default(25) %}
-        <div class="progress-container">
-            {% set gap_width_px = 4 %}
-            <div class="custom-progress-track" 
-            role="progressbar"
-            aria-label="Onboarding completion progress"
-            aria-valuenow="{{ percentage | round | int }}"
-            aria-valuemin="25"
-            aria-valuemax="100">
-                <div class="custom-progress-filled" style="width: {{ percentage }}%;"></div>
-                {% if percentage > 0 and percentage < 100 %}
-                    <div class="custom-progress-gap" style="width: {{ gap_width_px }}px;"></div>
-                {% else %}
-                    <div class="custom-progress-gap" style="display: none; width: {{ gap_width_px }}px;"></div>
-                {% endif %}
-                {% set unfilled_width_expression = "100% - " ~ percentage ~ "%" %}
-                {% if percentage > 0 and percentage < 100 %}
-                    {% set unfilled_width_expression = unfilled_width_expression ~ " - " ~ gap_width_px ~ "px" %}
-                {% endif %}
-                <div class="custom-progress-unfilled" style="width: calc({{ unfilled_width_expression }}); flex-basis: calc({{ unfilled_width_expression }});"></div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
             </div>
+            <div class="progress-stop active" data-step="0"></div>
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-stop" data-step="1"></div>
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-stop" data-step="2"></div>
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-stop" data-step="3"></div>
         </div>
 
         <div class="carousel-container">
             <div class="carousel-wrapper" id="carouselWrapper">
+                <div class="onboarding-slide logo-slide">
+                    <div class="app-logo" id="appLogo">🛍️</div>
+                    <h1 class="app-title" id="appTitle">Shopping Manager</h1>
+                    <p class="app-subtitle" id="appSubtitle">Your smart companion for organized household shopping</p>
+                </div>
+
                 <div class="onboarding-slide">
-                    <div class="slide-card active">
-                        <div class="slide-icon"><i class="bi bi-list-check fs-2"></i></div>
-                        <h2 class="slide-title">Welcome</h2>
-                        <p class="slide-description">Add items to your lists as soon as you need to and your lists will remember them for your next shopping trip.</p>
+                    <div class="slide-card">
+                        <div class="slide-icon">🛒</div>
+                        <h2 class="slide-title">Smart Shopping</h2>
+                        <p class="slide-description">Organize your shopping lists, track expenses, and never forget an item again. Your household shopping made simple and efficient.</p>
                     </div>
                 </div>
 
                 <div class="onboarding-slide">
                     <div class="slide-card">
-                        <div class="slide-icon"><i class="bi bi-list-check fs-2"></i></div>
-                        <h2 class="slide-title">Smart Shopping Lists</h2>
-                        <p class="slide-description">Add-as-you-go and your lists will remember the items for your next shopping trip.</p>
-                    </div>
-                </div>
-
-                <div class="onboarding-slide">
-                    <div class="slide-card">
-                        <div class="slide-icon"><i class="bi bi-people fs-2"></i></div>
+                        <div class="slide-icon">👥</div>
                         <h2 class="slide-title">Family Collaboration</h2>
                         <p class="slide-description">Share lists with family members, assign tasks, and coordinate shopping trips. Everyone stays in sync with real-time updates.</p>
                     </div>
@@ -89,19 +77,20 @@
 
                 <div class="onboarding-slide">
                     <div class="slide-card">
-                        <div class="slide-icon"><i class="bi bi-arrow-repeat fs-2"></i></div>
-                        <h2 class="slide-title">Real-time Sync</h2>
-                        <p class="slide-description">All your lists are automatically synced across all your devices and are available for anyone in your household.</p>
+                        <div class="slide-icon">📊</div>
+                        <h2 class="slide-title">Budget Tracking</h2>
+                        <p class="slide-description">Monitor your spending, set budgets, and get insights into your shopping patterns. Take control of your household expenses.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="onboarding-navigation">
-            <button class="nav-btn" id="prevBtn" disabled onclick="previousSlide()">Previous</button>
+        <div class="onboarding-navigation" id="navigationButtons">
+            <button class="nav-btn" id="prevBtn" onclick="previousSlide()" disabled>Previous</button>
             <button class="nav-btn primary" id="nextBtn" onclick="nextSlide()">Next</button>
         </div>
     </div>
+
     <script src="{{ url_for('static', filename='js/onboarding.js') }}"></script>
 </body>
 </html>

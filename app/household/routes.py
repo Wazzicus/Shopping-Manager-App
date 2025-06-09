@@ -54,7 +54,7 @@ def setup():
             current_user.role = 'admin'
             db.session.commit()
 
-            notify_household_members(current_user.id, household.id, f"{current_user.username} joined your household!")
+            notify_household_members(current_user.id, household.id, "You have a new member!",  f"{current_user.username} joined your household!")
             
             try:
                 log_activity(user_id=current_user.id, 
@@ -174,7 +174,7 @@ def remove_member(user_id_to_remove):
         logging.exception(f"Error removing member {user_id_to_remove} from household {household_id_for_log}: {e}")
         return jsonify({'success': False, 'error': "A server error occurred while removing the member."}), 500
     
-    notify_household_members(current_user.id, household.id, f"{removed_member_username} was removed from the household by {admin.username}.")
+    notify_household_members(current_user.id, household.id, "You're a man down!", f"{removed_member_username} was removed from the household by {admin.username}.")
 
     try:
         log_activity(
@@ -226,7 +226,7 @@ def rename(household_id):
 
             logging.exception(f"Failed to log activity: {e}")
 
-        notify_household_members(current_user.id, household.id, f"{current_user.username} renamed the household to '{new_name}'.")    
+        notify_household_members(current_user.id, household.id, "Your household has a new name!", f"{current_user.username} renamed the household to '{new_name}'.")    
 
         return jsonify({ 'success': True, 'message': 'Household renamed successfully', 'new_name': new_name}), 200
     else:
@@ -362,7 +362,7 @@ def leave():
                 logging.exception(f"Error during admin leave & transfer for household {household_id_for_log}: {e}")
                 return jsonify({'success': False, 'error': "A server error occurred during the admin transfer process."}), 500
 
-            notify_household_members(user_to_leave.id, household_id_for_log, f"{user_to_leave.username} has left the household. {new_admin.username} is now the administrator.")
+            notify_household_members(user_to_leave.id, household_id_for_log, "You're a man down!", f"{user_to_leave.username} has left the household. {new_admin.username} is now the administrator.")
 
             try:
                 log_activity(

@@ -1,6 +1,6 @@
 {
     "name": "Shopping Manager",
-    "short_name": "ShopManager",
+    "short_name": "ShoppingManager",
     "description": "An application to manage your shopping lists collaboratively.",
     "start_url": "/",
     "icons": [

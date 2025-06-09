@@ -110,7 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.innerHTML = originalHTML;
             }
         } catch (error) {
-            showToast(error.message || 'Network error or issue processing request.', 'danger');
+            const errorMessage = navigator.onLine 
+            ? error.message
+            : "You are offline. Your action could not be completed.";
+            showToast(error.message || errorMessage || 'Network error or issue processing request.', 'danger');
             button.innerHTML = originalHTML;
         } finally {
             button.disabled = false;
@@ -148,7 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
                  showToast(result.message || "Failed to add item.", 'danger');
             }
         } catch (error) {
-            showToast("Network error adding item. Please try again.", 'danger');
+            const errorMessage = navigator.onLine 
+            ? error.message // Use server error message if online
+            : "You are offline. Your action could not be completed.";
+            showToast( error.message || errorMessage || "Network error adding item. Please try again.", 'danger');
         }
     }
 
@@ -309,9 +315,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputElement.disabled = false; inputElement.focus();
             }
         } catch (error) {
+            const errorMessage = navigator.onLine 
+            ? error.message 
+            : "You are offline. Your action could not be completed.";
             inputElement.disabled = false;
             if (errorElement) { errorElement.textContent = 'Network error. Please try again.'; errorElement.style.display = 'block';}
-            else { showToast('Network error. Could not save item name.', 'danger');}
+            else { showToast( error.message || errorMessage || 'Network error. Could not save item name.', 'danger');}
             inputElement.focus();
         } finally {
             isSaving = false;
@@ -420,7 +429,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error('Delete error:', error);
-                showToast('Failed to delete item', 'error');
+                const errorMessage = navigator.onLine 
+                ? error.message 
+                : "You are offline. Your action could not be completed.";
+                showToast( error.message || errorMessage || 'Failed to delete item', 'danger');
             } finally {
                 modal.hide();
             }

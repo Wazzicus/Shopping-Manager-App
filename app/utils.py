@@ -100,12 +100,9 @@ def format_action(action_type, item_name=None, list_name=None, new_name=None, ol
         return f"Performed the action: {action_type}"
     
 
-def notify_household_members(actor_user_id, household_id, message_body):
-    # Get the household ID
-    household_id = household_id
-
-    # Get users in the same household
-    members = User.query.join(Household).filter(
+def notify_household_members(actor_user_id, household_id, title, message_body):
+    
+    members = User.query.join(Household, User.household_id == Household.id).filter(
         Household.id == household_id,
         User.id != actor_user_id
     ).all()
@@ -118,18 +115,16 @@ def notify_household_members(actor_user_id, household_id, message_body):
 
     # Batch send the notification
     if tokens:
-        
         message = messaging.MulticastMessage(
-                tokens=tokens,
-                notification=messaging.Notification(
-                    title="Household Update",
-                    body=message_body
-                )
+            tokens=tokens,
+            notification=messaging.Notification(
+                title=title,
+                body=message_body
             )
+        )
         
         try:
             response = messaging.send_multicast(message)
             print(f"✅ Notifications sent: {response.success_count}, Failed: {response.failure_count}")
         except messaging.FirebaseError as e:
             print(f"Error sending notification: {e}")
-

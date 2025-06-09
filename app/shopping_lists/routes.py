@@ -67,7 +67,7 @@ def create_list():
         db.session.add(new_list)
         db.session.commit()
 
-        notify_household_members(current_user.id, current_user.household_id, f"{current_user.username} created a new list: {new_list.name}.")
+        notify_household_members(current_user.id, current_user.household_id, "New list created!", f"{current_user.username} created a new list: {new_list.name}.")
         
         log_activity(user_id=current_user.id, household_id=current_user.household_id, action_type="List Creation", timestamp=datetime.now(tz), list_name=new_list.name)
 
@@ -136,7 +136,7 @@ def view_list(list_id):
                         "id": new_item.id,
                         "name": new_item.name,
                         "purchased": new_item.purchased,
-                        "added_by": {
+                        "added_by_user": {
                             "id": current_user.id,
                             "name": current_user.name,
                             "avatar_url": current_user.avatar_url
@@ -232,7 +232,7 @@ def delete_list(list_id):
         db.session.delete(shopping_list)
         db.session.commit()
 
-        notify_household_members(current_user.id, current_user.household_id, f"{current_user.username} deleted the list '{list_name}'.")
+        notify_household_members(current_user.id, current_user.household_id, "A list has been deleted!", f"{current_user.username} deleted the list '{list_name}'.")
 
         log_activity(user_id=current_user.id, household_id=current_user.household_id, action_type="List Deletion", timestamp=datetime.now(tz), list_name=list_name)
         return jsonify({"success": True, "message": f'"{list_name}" deleted.'})

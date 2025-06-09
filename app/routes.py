@@ -29,7 +29,7 @@ def index():
         # Redirect authenticated users to their dashboard
         return redirect(url_for('main.dashboard'))
     
-    return render_template('index.html')
+    return render_template('onboarding.html')
 
 @main.route('/onboarding')
 def onboarding():
