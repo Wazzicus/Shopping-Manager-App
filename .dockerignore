@@ -1,0 +1,11 @@
+# flyctl launch added from .gitignore
+**\venv
+**\.venv
+**\static\.webassets-cache
+**\*.pyc
+**\secrets
+**\.env
+**\__pycache__
+**\*.py[cod]
+**\*$py.class
+fly.toml
