@@ -78,18 +78,7 @@ function getCSRFToken() {
     return metaTag ? metaTag.content : '';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register("{{ url_for('main.serviceworker') }}")
-                    .then(registration => {
-                        console.log('✅ Service Worker registered:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.error('❌ Service Worker registration failed:', error);
-                    });
-                });
-            }   
+document.addEventListener('DOMContentLoaded', () => {   
     const confirmationModalElement = document.getElementById('confirmModal');
     const confirmBtn = document.getElementById('confirmBtn');
     const modalTitleElement = document.getElementById('confirmModalLabel');

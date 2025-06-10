@@ -94,7 +94,20 @@
             <button class="nav-btn primary" id="nextBtn" onclick="nextSlide()">Next</button>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register("{{ url_for('main.serviceworker') }}")
+                    .then(registration => {
+                        console.log('✅ Service Worker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('❌ Service Worker registration failed:', error);
+                    });
+                });
+            }
+
+        </script>
     <script src="{{ url_for('static', filename='js/onboarding.js') }}"></script>
 </body>
 </html>
