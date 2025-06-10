@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js');
 
-const CACHE_VERSION = 'v1.0.0';
+const CACHE_VERSION = 'v1.2.0';
 const API_BASE_URL = 'https://api.shoppingmanager.com'; 
 const OFFLINE_PAGE = '/offline';
 const FALLBACK_LIST_DATA = {
@@ -31,12 +31,11 @@ if (workbox) {
         
         // Static assets
         { url: '/static/js/main.js', revision: CACHE_VERSION },
-        { url: '/static/css/main.min.css', revision: CACHE_VERSION },
+        { url: '/static/gen/css/main.min.css', revision: CACHE_VERSION },
         { url: '/static/css/offline.css', revision: CACHE_VERSION },
         
         // Essential images and icons
         { url: '/static/images/logo.svg', revision: CACHE_VERSION },
-        { url: '/static/images/offline-illustration.svg', revision: CACHE_VERSION },
         { url: '/static/icons/favicon.ico', revision: CACHE_VERSION },
         { url: '/static/icons/icon-192x192.png', revision: CACHE_VERSION },
         { url: '/static/icons/icon-512x512.png', revision: CACHE_VERSION },

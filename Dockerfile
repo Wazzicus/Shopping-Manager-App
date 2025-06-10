@@ -13,6 +13,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-EXPOSE 5000
+EXPOSE 8080
 
-CMD [ "gunicorn", "run:app" , "--bind", "0.0.0.0:5000"]
+CMD [ "gunicorn", "-b" , "0.0.0.0:8080", "app:create_app()"]

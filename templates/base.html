@@ -29,7 +29,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-
+        <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='gen/css/main.min.css') }}" rel="stylesheet">
         
     </head>
@@ -45,7 +45,7 @@
                 <span>Shopping Manager</span>
             </a>
             <div class="header-actions">
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated and current_user.household_id %}
                 <a href="{{ url_for('main.recents') }}" class="header-btn {% if request.endpoint == 'main.recents' %}active{% endif %}">
                     <i class="bi {% if request.endpoint == 'main.recents' %}bi-bell-fill{%else%}bi-bell{% endif %}"></i>
                 </a>
@@ -148,34 +148,7 @@
                 });
             }
         </script>
-        
-        <!-- Firebase Scripts -->
-        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
-        <script>
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('{{ url_for("main.firebaseserviceworker") }}')
-                .then((registration) => {
-                    console.log("Service Worker registered");
-                    
-                    // Reinitialize messaging with the registration
-                    getToken(messaging, {
-                        vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk",
-                        serviceWorkerRegistration: registration
-                    }).then((currentToken) => {
-                        if (currentToken) {
-                            console.log("Token with registered SW:", currentToken);
-                            fetch("/store-token", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ token: currentToken }),
-                            });
-                        }
-                    });
-                })
-                .catch((err) => console.error("Service Worker registration failed:", err));
-            }
-        </script>
+
         <script type="module" src="{{ url_for('static', filename='js/firebase-init.js') }}"></script>
         
         <script>

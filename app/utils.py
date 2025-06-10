@@ -100,27 +100,26 @@ def format_action(action_type, item_name=None, list_name=None, new_name=None, ol
         return f"Performed the action: {action_type}"
     
 
-def notify_household_members(actor_user_id, household_id, title, message_body):
+def notify_household_members(actor_user_id, household_id, title, message_body, click_action="/dashboard"):
     
     members = User.query.join(Household, User.household_id == Household.id).filter(
         Household.id == household_id,
         User.id != actor_user_id
     ).all()
 
-    # Get all FCM tokens for those users
-    tokens = []
-    for member in members:
-        for token_obj in member.push_tokens:
-            tokens.append(token_obj.token)
+    tokens = [token_obj.token for member in members for token_obj in member.push_tokens]
 
-    # Batch send the notification
     if tokens:
         message = messaging.MulticastMessage(
             tokens=tokens,
             notification=messaging.Notification(
                 title=title,
                 body=message_body
-            )
+            ),
+            # Add the 'data' payload for custom handling like click actions
+            data={
+                "click_action": click_action
+            }
         )
         
         try:

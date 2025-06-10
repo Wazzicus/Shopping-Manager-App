@@ -11,7 +11,7 @@ Routes:
 """
 
 import os
-from flask import Blueprint, render_template, url_for, flash, redirect, send_from_directory, request, jsonify
+from flask import Blueprint, render_template, url_for, flash, redirect, send_from_directory, request, jsonify, current_app
 from flask_login import login_required, current_user
 from app.extensions import db
 from app.models import Household as HouseholdModel, ShoppingList as ShoppingListModel, ActivityLog, ListItem as ListItemModel, FCMToken
@@ -124,7 +124,7 @@ def serviceworker():
 @main.route('/firebase-messaging-sw.js')
 def firebaseserviceworker():
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
-    return send_from_directory(root, 'static/firebase-messaging-sw.js')
+    return send_from_directory(root, 'firebase-messaging-sw.js')
 
 @main.route('/offline')
 def offline():
@@ -142,7 +142,6 @@ def store_token():
 
             existing_token = FCMToken.query.filter_by(user_id=user_id, token=token).first()
             if existing_token:
-                
                 return jsonify({"status": "already exists"}), 200
             
         db.session.add(FCMToken(token=token, user_id=user_id))
