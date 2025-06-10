@@ -1,15 +1,9 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js');
 
-const CACHE_VERSION = 'v1.2.0';
+const CACHE_VERSION = 'v1.3.1';
 const API_BASE_URL = 'https://api.shoppingmanager.com'; 
 const OFFLINE_PAGE = '/offline';
-const FALLBACK_LIST_DATA = {
-    id: 'offline-fallback',
-    name: 'Offline Shopping List',
-    items: [],
-    lastModified: new Date().toISOString(),
-    isOfflineOnly: true
-};
+
 
 if (workbox) {
     console.log('Shopping Manager Service Worker loaded with Workbox');
@@ -37,8 +31,8 @@ if (workbox) {
         // Essential images and icons
         { url: '/static/images/logo.svg', revision: CACHE_VERSION },
         { url: '/static/icons/favicon.ico', revision: CACHE_VERSION },
-        { url: '/static/icons/icon-192x192.png', revision: CACHE_VERSION },
-        { url: '/static/icons/icon-512x512.png', revision: CACHE_VERSION },
+        { url: '/static/icons/web-app-manifest-192x192.png', revision: CACHE_VERSION },
+        { url: '/static/icons/web-app-manifest-512x512.png', revision: CACHE_VERSION },
         
         // PWA manifest
         { url: '/static/manifest.json', revision: CACHE_VERSION },
