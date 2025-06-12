@@ -1,1 +1,0 @@
-from .routes import shoppinglist_bp

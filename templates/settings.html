@@ -136,7 +136,7 @@
             </form>
         </div>
     </div>
-        <button type="button" class="btn btn-warning w-100"
+        <button type="button" class="btn btn-warning w-100 mb-3"
             data-bs-toggle="modal"
             data-bs-target="#confirmModal"
             data-modal-title="Leave Household ?"
@@ -149,7 +149,7 @@
         </button>
     <form method="POST" action="{{ url_for('auth.logout') }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button type="submit" class="btn btn-danger w-100">
+        <button type="submit" class="btn btn-danger w-100 mb-3">
             <span>Logout</span>
         </button>
     </form>
