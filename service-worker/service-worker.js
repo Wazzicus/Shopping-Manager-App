@@ -318,4 +318,45 @@ if (workbox) {
             );
         }
     });
+    
 }
+
+self.addEventListener('push', function(event) {
+    if (event.data) {
+        const payload = event.data.json();
+        const title = payload.title || "Shopping Manager";
+        const options = {
+            body: payload.body || "There's something new. Tap to learn more",
+            icon: '/static/icons/web-app-manifest-192x192.png',
+            badge: '/static/icons/web-app-manifest-192x192.png',
+            data: {
+                click_action: payload.click_action || '/dashboard',
+                household_id: payload.household_id || null,
+            }
+        };
+
+    event.waitUntil(self.registration.showNotification(title, options));
+    }
+});
+
+self.addEventListener('notificationclick', function(event) {
+    const click_action = event.notification.data?.click_action || "/dashboard";
+    event.notification.close();
+
+    event.waitUntil(
+        clients.matchAll({
+            type: 'window',
+            includeUncontrolled: true
+        }).then(clientList => {
+            for (const client of clientList) {
+                if (client.url === click_action && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(click_action);
+            }
+        })
+
+    );
+});

@@ -107,17 +107,20 @@ def notify_household_members(actor_user_id, household_id, title, message_body, c
         User.id != actor_user_id
     ).all()
 
-    tokens = [token_obj.token for member in members for token_obj in member.push_tokens]
+    token_map = {}
+    for member in members:
+        for token_obj in member.push_tokens:
+            token_map[token_obj.token] = token_obj
+
+
+    tokens = list(token_map.keys())
 
     if tokens:
         message = messaging.MulticastMessage(
             tokens=tokens,
-            notification=messaging.Notification(
-                title=title,
-                body=message_body
-            ),
-            # Add the 'data' payload for custom handling like click actions
             data={
+                "title": title,
+                "body": message_body,
                 "click_action": click_action
             }
         )
@@ -125,5 +128,17 @@ def notify_household_members(actor_user_id, household_id, title, message_body, c
         try:
             response = messaging.send_multicast(message)
             print(f"✅ Notifications sent: {response.success_count}, Failed: {response.failure_count}")
+            if response.failure_count > 0:
+                for idx, resp in enumerate(response.responses):
+                    if not resp.success:
+                        error_code = getattr(resp.exception, 'code', 'unknown')
+                        if error_code in ["messaging/invalid-argument", "messaging/registration-token-not-registered"]:
+                            bad_token = tokens[idx]
+                            token_obj = token_map.get(bad_token)
+                            if token_obj:
+                                db.session.delete(token_obj)
+                                print(f"Removed invalid token: {bad_token}")
+                                db.session.commit()
+
         except messaging.FirebaseError as e:
             print(f"Error sending notification: {e}")

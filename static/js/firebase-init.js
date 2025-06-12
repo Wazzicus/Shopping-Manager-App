@@ -1,4 +1,3 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
 
@@ -11,68 +10,41 @@ const firebaseConfig = {
     measurementId: "G-VFL14S59LN"
 };
 
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+const firebaseapp = initializeApp(firebaseConfig);
+const messaging = getMessaging(firebaseapp);
 
-// A function to be called to request permission and get the token
-async function requestNotificationPermission() {
-    try {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-            console.log("Notification permission granted.");
-            await getAndSendToken();
-        } else {
-            console.warn("Notifications permission denied.");
-        }
-    } catch (err) {
-        console.error("Notification permission request failed:", err);
-    }
-}
-
-// A function to get the token and send it to the server
-async function getAndSendToken() {
-    try {
-        const currentToken = await getToken(messaging, {
-            vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk",
+navigator.serviceWorker.register('/service-worker.js').then(registration => {
+    console.log('✅ Service Worker registered:', registration.scope);
+    messaging.useServiceWorker(registration);
+    return Notification.requestPermission();
+}).then(permission => {
+    if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        return getToken(messaging, {
+            vapidKey: 'BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk'
         });
-
-        if (currentToken) {
-            console.log("✅ FCM Token:", currentToken);
-            // Send token to your Flask backend
-            await fetch("/store-token", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: currentToken }),
-            });
-        } else {
-            console.log("No registration token available. Request permission to generate one.");
-            requestNotificationPermission();
-        }
-    } catch (err) {
-        console.error("An error occurred while retrieving token. ", err);
+    } else {
+        throw new Error('Notification permission denied!');
     }
-}
+}).then(currentToken => {
+    if (currentToken) {
+        console.log('FCM Token retrieved')
 
-
-// --- Main Execution Logic ---
-
-// 1. Register the service worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
-        .then((registration) => {
-            console.log("Service Worker registered successfully with scope:", registration.scope);
-        })
-        .catch((err) => {
-            console.error("Service Worker registration failed:", err);
+        await fetch('/store-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            bpdy: JSON.stringify({ token: currentToken })
         });
-}
-
-
-// 2. Handle foreground notifications
-onMessage(messaging, (payload) => {
-    console.log("📨 Foreground notification received:", payload);
-    showToast(title=payload.notification.title, message=payload.notification.body);
+    } else {
+        console.warn('No FCM token retrieved.');
+    }
+}).catch(error => {
+    console.error('❌ Service Worker registration failed:', error);
 });
 
-// Expose a function to the global scope if you need to call it from inline HTML, e.g., <button onclick="initPush()">
-window.initPush = requestNotificationPermission;
+onMessage(messaging, (payload) => {
+    console.log('Message received in foreground:', payload);
+    showToast(title=payload.notification.title, message=payload.notification.body)
+});

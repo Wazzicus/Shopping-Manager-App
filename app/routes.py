@@ -121,11 +121,6 @@ def serviceworker():
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
     return send_from_directory(root, 'service-worker/service-worker.js')
 
-@main.route('/firebase-messaging-sw.js')
-def firebaseserviceworker():
-    root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
-    return send_from_directory(root, 'firebase-messaging-sw.js')
-
 @main.route('/offline')
 def offline():
     return render_template("offline.html")
