@@ -21,6 +21,12 @@
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "maskable"
+        },
+        {
+        "src": "/static/icons/web-app-manifest-monochrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "monochrome"
         }
     ],
     "theme_color": "#0dcaf0",

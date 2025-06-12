@@ -7,3 +7,11 @@ secrets/
 __pycache__/
 *.py[cod]
 *$py.class
+*.log
+*.apk
+*.aab
+.vscode/
+.gradle/
+.*keystore
+*.jks
+build/

@@ -1,0 +1,25 @@
+{
+    "name": "Shopping Manager",
+    "packageID": "dev.fly.shopping_manager_app.twa",
+    "host": "https://shopping-manager-app.fly.dev",
+    "start_url": "/",
+    "themeColor": "#0dcaf0",
+    "backgroundColor": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait",
+    "scope": "/",
+    "shortcutInfo": [],
+    "signingKey": {
+        "path": "android.jks",
+        "alias": "my-alias",
+        "password": "windows",
+        "keystorePassword": "windows"
+        },
+    "icons": {
+        "masked": "/static/icons/web-app-manifest-monochrome-512x512.png",
+        "primary": "/static/icons/web-app-manifest-512x512.png"     
+    },
+    "androidVersionCode": 1,
+    "androidVersionName": "1.0.0",
+    "appVersion": "1.0.0"
+}

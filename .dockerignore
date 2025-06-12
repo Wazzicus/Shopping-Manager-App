@@ -9,3 +9,15 @@
 **\*.py[cod]
 **\*$py.class
 fly.toml
+build/
+android/
+gitignore
+*.keystore
+*.jks
+*.apk
+*.aab
+.vscode
+.gradle/
+gradelw
+gradelw.bat
+src/
