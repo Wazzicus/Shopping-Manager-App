@@ -167,7 +167,6 @@ class ListItem(db.Model):
     quantity = db.Column(db.Integer, default=1, nullable=False)
     measure = db.Column(db.String(10), nullable=False, default='')
     purchased = db.Column(db.Boolean, default=False, nullable=False)
-    note = db.Column(db.String(100, nullable=True))
     added_at = db.Column(db.DateTime(timezone=True), default=now_local, nullable=False)
 
 

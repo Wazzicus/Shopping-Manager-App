@@ -127,21 +127,33 @@ def offline():
 
 @main.route('/store-token', methods=['POST'])
 def store_token():
-    data = request.get_json()
-    token = data.get('token')
+    try:
+        # Ensure request has valid JSON
+        data = request.get_json()
+        if not data:
+            print("🚨 Invalid JSON format or empty request.")
+            return jsonify({"error": "Invalid JSON format or empty request"}), 400
 
-    if token:
+        print(f"🔍 Received data: {data}") 
+        
+        token = data.get('token')
+        if not token:
+            return jsonify({"error": "No token provided"}), 400
+
         # Store it (tie to user if authenticated)
         user_id = current_user.id if current_user.is_authenticated else None
-        if user_id:
 
+        if user_id:
             existing_token = FCMToken.query.filter_by(user_id=user_id, token=token).first()
             if existing_token:
                 return jsonify({"status": "already exists"}), 200
-            
+
+        # Add token to the database
         db.session.add(FCMToken(token=token, user_id=user_id))
         db.session.commit()
 
-        return jsonify({"status": "success"})
+        return jsonify({"status": "success"}), 200
     
-    return jsonify({"error": "No token provided"}), 400
+    except Exception as e:
+        print(f"❌ Error storing token: {str(e)}")  # Logs error for debugging
+        return jsonify({"error": "Internal server error"}), 500

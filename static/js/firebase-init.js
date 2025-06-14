@@ -10,41 +10,77 @@ const firebaseConfig = {
     measurementId: "G-VFL14S59LN"
 };
 
-const firebaseapp = initializeApp(firebaseConfig);
-const messaging = getMessaging(firebaseapp);
+const firebaseApp = initializeApp(firebaseConfig);
+const messaging = getMessaging(firebaseApp);
 
-navigator.serviceWorker.register('/service-worker.js').then(registration => {
-    console.log('✅ Service Worker registered:', registration.scope);
-    messaging.useServiceWorker(registration);
-    return Notification.requestPermission();
-}).then(permission => {
-    if (permission === 'granted') {
-        console.log('Notification permission granted.');
-        return getToken(messaging, {
-            vapidKey: 'BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk'
-        });
-    } else {
-        throw new Error('Notification permission denied!');
-    }
-}).then(currentToken => {
-    if (currentToken) {
-        console.log('FCM Token retrieved')
+// let currentTokenInLocal = localStorage.getItem("fcm_token");
 
-        await fetch('/store-token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            bpdy: JSON.stringify({ token: currentToken })
+// async function updateFCMToken(userId) {
+//     try {
+//         const newToken = await getToken(messaging, {
+//             vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk"
+//         });
+
+//         if (newToken && newToken !== currentTokenInLocal) {
+//             console.log("Token Changed. Syncing changes");
+//             const res = await fetch("/store-token-update", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify({
+//                     token: newToken,
+//                     user_id: userId,
+//                 }),
+//             });
+
+//             if (res.ok) {
+//                 console.log("Changes Synced!");
+//                 localStorage.setItem("fcm_token", newToken);
+//             } else {
+//                 console.error("Failed to sync token", await res.text());
+//             }
+//         } else {
+//             console.log("Token unchanged or not available.");
+//         }
+//     } catch (err) {
+//         console.error("Error getting token", err);
+//     }
+// }
+
+async function requestAndStoreToken() {
+    try {
+        const registration = await navigator.serviceWorker.register('/service-worker.js');
+        console.log('✅ Service Worker registered:', registration.scope);
+
+        const permission = await Notification.requestPermission();
+
+        if (permission !== 'granted') throw new Error('Notification permission denied!');
+
+        const currentToken = await getToken(messaging, {
+            vapidKey: 'BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk',
+            serviceWorkerRegistration: registration
         });
-    } else {
-        console.warn('No FCM token retrieved.');
+
+        if (currentToken) {
+            console.log('✅ FCM Token retrieved');
+
+            await fetch('/store-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                 },
+                body: JSON.stringify({ token: currentToken })
+            });
+        } else {
+            console.warn('⚠️ No FCM token retrieved.');
+        }
+    } catch (error) {
+        console.error('❌ Error in token retrieval:', error);
     }
-}).catch(error => {
-    console.error('❌ Service Worker registration failed:', error);
-});
+}
+
+requestAndStoreToken();
 
 onMessage(messaging, (payload) => {
-    console.log('Message received in foreground:', payload);
-    showToast(title=payload.notification.title, message=payload.notification.body)
+    console.log('📩 Message received in foreground:', payload);
+    showToast(payload.notification.title, payload.notification.body);
 });

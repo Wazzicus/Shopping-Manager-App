@@ -117,13 +117,17 @@ def notify_household_members(actor_user_id, household_id, title, message_body, c
 
     if tokens:
         message = messaging.MulticastMessage(
-            tokens=tokens,
-            data={
-                "title": title,
-                "body": message_body,
-                "click_action": click_action
-            }
-        )
+        tokens=tokens,
+        notification={
+            "title": title,
+            "body": message_body
+        },
+        data={
+            "click_action": click_action,
+            "household_id": str(household_id)
+        }
+    )
+
         
         try:
             response = messaging.send_multicast(message)

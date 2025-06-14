@@ -78,41 +78,6 @@ function getCSRFToken() {
     return metaTag ? metaTag.content : '';
 }
 
-let currentTokeninLocal = localStorage.getItem("fcm_token");
-
-async function updateFCMToken(userId) {
-    try {
-        const messaging = getMessaging();
-        const newToken = await getToken(messaging, {vapidKey: "BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk"});
-
-        if (newToken && newToken !== currentTokeninLocal) {
-            console.log("Token Changed. Syncing changes");
-            const res = await fetch("/store-token-update", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    token: newToken,
-                    user_id: userId,
-                }),
-            });
-
-            if (res.ok) {
-                console.log("Changes Synced!");
-
-                localStorage.setItem("fcm_token", newToken);
-            } else {
-                console.error("Failed to sync token", await res.text());
-            }
-        } else {
-            console.log("Token unchanged or not available.");
-        }
-    } catch(err) {
-        console.error("Error getting token", err);
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {   
     const confirmationModalElement = document.getElementById('confirmModal');
     const confirmBtn = document.getElementById('confirmBtn');
