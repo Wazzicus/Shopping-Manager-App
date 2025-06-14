@@ -48,12 +48,20 @@ const messaging = getMessaging(firebaseApp);
 
 async function requestAndStoreToken() {
     try {
+        // Check if permission has already been requested
+        if (localStorage.getItem("fcm_permission_requested")) {
+            console.log("🔄 Notification permission already requested. Skipping.");
+            return;
+        }
+
         const registration = await navigator.serviceWorker.register('/service-worker.js');
         console.log('✅ Service Worker registered:', registration.scope);
 
         const permission = await Notification.requestPermission();
 
         if (permission !== 'granted') throw new Error('Notification permission denied!');
+
+        localStorage.setItem("fcm_permission_requested", true);
 
         const currentToken = await getToken(messaging, {
             vapidKey: 'BBJ9HNDHb9DqrZOKshxSHHplZXPQ9Q6Qgs0YO2oUOehnWLu2YR3jILtmBoZOqYGgaSsl_HBrtpCWIFbsOJRGLDk',
@@ -77,6 +85,7 @@ async function requestAndStoreToken() {
         console.error('❌ Error in token retrieval:', error);
     }
 }
+
 
 requestAndStoreToken();
 
